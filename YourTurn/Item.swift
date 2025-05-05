@@ -16,3 +16,27 @@ final class Item {
         self.timestamp = timestamp
     }
 }
+
+
+@Model
+final class Shift {
+    
+    @Attribute(.unique)
+    var date: Date
+    
+    var startDate: Date
+    var endDate: Date
+    
+    var data: Data
+    
+    var persons: [String] {
+        YTStorage.loadStringArray(data: data)
+    }
+    
+    init(date: Date, startDate: Date, endDate: Date, data: Data) {
+        self.date = date
+        self.startDate = startDate
+        self.endDate = endDate
+        self.data = data
+    }
+}
