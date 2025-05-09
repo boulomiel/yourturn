@@ -6,10 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 import Foundation
 
+extension Array: @unchecked Sendable { }
+
+
 @Observable
+@MainActor
 class YTCalendarSelectionObs {
+    
+    let history: BackgroundSerialPersistenceActor
+    var count: Int = 0
+    
+    init(history: BackgroundSerialPersistenceActor) {
+        self.history = history
+    }
     
     enum YTSelectionError: YTErrorPopupProtocol {
         case secondTimeMustBeBigger
@@ -86,4 +98,13 @@ class YTCalendarSelectionObs {
         }
     }
     
+    func fetchCount() async {
+        do {
+            self.count = try await history.fetchCount(Shift.self)
+        } catch {
+            print(error)
+        }
+    }
+    
 }
+

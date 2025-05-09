@@ -37,7 +37,11 @@ struct YTSelectionNameCell: View {
     }
     
     @Observable
-    class Obs: Identifiable {
+    class Obs: Identifiable, Equatable {
+        
+        static func ==(lhs: Obs, rhs: Obs) -> Bool {
+            lhs.id == rhs.id
+        }
         
         let id: UUID = .init()
         var name: String

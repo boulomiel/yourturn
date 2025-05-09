@@ -26,9 +26,9 @@ struct FocusAppearField: View {
     }
     
     var body: some View {
-        TextField("Insert here...", text: $obs.name.onChange({ name in
+        TextField("Insert here...", text: $obs.name.onChange{ name in
             obs.getNameEvent.send(.onChange(name: name))
-        }))
+        })
         .focused($isFocused)
         .onAppear {
             isFocused = true

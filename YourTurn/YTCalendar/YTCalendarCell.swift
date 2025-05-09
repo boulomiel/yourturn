@@ -87,9 +87,6 @@ struct YTCalendarCell: View {
                     dateState = .idle
                 }
             }
-            .onAppear {
-              //  fetchDateList()
-            }
     }
     
     @ViewBuilder
@@ -107,23 +104,5 @@ struct YTCalendarCell: View {
                 }
             }
             .animation(.bouncy, value: dateState)
-    }
-    
-    func fetchDateList() {
-        let shiftDate = cellDate
-        do {
-            let predicate = #Predicate<Shift>{ shift in
-                shift.date == shiftDate
-            }
-            var descriptor = FetchDescriptor<Shift>(predicate: predicate)
-            descriptor.fetchLimit = 1
-            
-            let result = try moc.fetch(descriptor)
-            if let dateFound = result.first {
-                hasSavedList = true
-            }
-        } catch {
-            print(error)
-        }
     }
 }

@@ -21,15 +21,26 @@ class YTHourShiftObs {
     let converter: YTCSVConverter
     var shareLink: URL?
     let locolStorage = YTLocalStorage()
-    var task: Task<Void, Never>?    
+    var shiftIdentifier: PersistentIdentifier?
     
     // Constructor
+    let history: BackgroundSerialPersistenceActor
     let modelContainer: ModelContainer
     let date: Date
     
     init(modelContainer: ModelContainer, date: Date) {
         self.date = date
         self.shiftCase = .time
+        self.history = .init(container: modelContainer)
+//        let components = Calendar.current.dateComponents([.hour, .minute], from: .now)
+//        var advanced: TimeInterval = 0
+//        if let hour = components.hour {
+//            advanced += 60 * 60 * TimeInterval(hour)
+//        }
+//        if let minutes = components.minute {
+//            advanced += 60 * TimeInterval(minutes)
+//        }
+//        let start = date.advanced(by: advanced)
         self.startHour = date
         self.endHour = date.advanced(by: 60 * 60 / 2)
         self.persons = []
@@ -94,7 +105,10 @@ class YTHourShiftObs {
     
     private func getTimePerPerson() -> TimeInterval? {
         let count = persons.count
-        guard count > 1 else { return nil }
+        guard count > 1 else {
+            removeCurrentShift()
+            return nil
+        }
         let calendar = Calendar.current
         let diffs = calendar.dateComponents([.hour, .minute], from: startHour, to: endHour)
         var result: Double = 0
@@ -124,21 +138,57 @@ class YTHourShiftObs {
                 self.persons = dateFound.persons.map { YTPerson(name: $0) }
                 self.startHour = dateFound.startDate
                 self.endHour = dateFound.endDate
+                self.shiftIdentifier = dateFound.id
             }
         } catch {
             print(error)
         }
     }
     
-    private func saveCurrentList() {
+    func removeCurrentShift() {
+        let moc = modelContainer.mainContext
+        guard let idenfitier = shiftIdentifier else { return }
+        do {
+            try moc.delete(model: Shift.self, where: #Predicate { $0.id  == idenfitier })
+            try moc.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func saveCurrentList() {
         let usernames = persons.map(\.name)
         let moc = modelContainer.mainContext
+        let shift = Shift(date: date, startDate: startHour, endDate: endHour, data: YTStorage.archiveStringArray(object: usernames))
         do {
-            let shift = Shift(date: date, startDate: startHour, endDate: endHour, data: YTStorage.archiveStringArray(object: usernames))
             moc.insert(shift)
             try moc.save()
         } catch {
             print(error)
+        }
+//        Task {
+//            do {
+//                 await history.insert(data: shift)
+//            } catch {
+//                print(error)
+//            }
+//        }
+    }
+    
+    func fetchTeamCount() -> Int {
+//        do {
+//            return try await history.fetchCount(Shift.self)
+//        } catch {
+//            print(error)
+//            return 0
+//        }
+        let moc = modelContainer.mainContext
+        do {
+            let fetchDescriptor = FetchDescriptor<Team>()
+            return try moc.fetchCount(fetchDescriptor)
+        } catch {
+            print(error)
+            return 0
         }
     }
 }

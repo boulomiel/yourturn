@@ -9,51 +9,60 @@ import SwiftUI
 
 struct YTCalendarPicker: View {
     
-    @State var obs: YTCalendarPickerObs = .init()
-    @State var selectionObs: YTCalendarSelectionObs = .init()
-    
-    
     @Environment(\.modelContext) private var moc
+    
+    @State private var obs: YTCalendarPickerObs = .init()
     @State private var sheetDate: SheetDate?
+    @State private var sheetTeam: SheetTeam?
+    @State private var teamPersons: [YTPerson] = []
     @Namespace private var pickerSpace
-
+    
+    // Constructor
+    @State var selectionObs: YTCalendarSelectionObs
+    
+    
+    init(selectionObs: YTCalendarSelectionObs) {
+        self.selectionObs = selectionObs
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack(spacing: 40) {
-                GeometryReader { geo in
-                    let size = geo.size
-                    if !obs.weeks.isEmpty {
-                        calendarGridView(size: size)
+            content
+                .navigationTitle(obs.monthName)
+                .padding(.top, 40)
+                .overlay(alignment: .bottom) {
+                    YTPopupView(state: selectionObs.calendarPopup)
+                }
+                .toolbar(content: calendarToolBar)
+                .sheet(item: $sheetDate) {
+                    selectionObs.firstDate = nil
+                    Task {
+                        await selectionObs.fetchCount()
                     }
+                } content: { sheet in
+                    YTHourShift(obs: .init(modelContainer: moc.container, date: sheet.date))
+                }
+                .sheet(item: $sheetTeam, content: { _ in
+                    YTAddTeamView(obs: .init())
+                })
+                .task {
+                    await selectionObs.fetchCount()
+                }
+        }
+    }
+    
+    var content: some View {
+        VStack(spacing: 40) {
+            GeometryReader { geo in
+                let size = geo.size
+                if !obs.weeks.isEmpty {
+                    calendarGridView(size: size)
+                    //   .position(x: geo.size.width * 0.5, y: geo.size.height * 0.5)
                 }
             }
-            .navigationTitle(obs.monthName)
-            .padding(.top, 40)
-            .overlay(alignment: .bottom) {
-                YTPopupView(state: selectionObs.calendarPopup)
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        if let date = selectionObs.firstDate?.date {
-                            self.sheetDate = .init(date: date)
-                        }
-                    } label: {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(selectionObs.firstDate != nil ? Color.blue.gradient.opacity(1.0) : Color.gray.gradient.opacity(0.6))
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .overlay {
-                                Image(systemName: "plus")
-                                    .foregroundStyle(.white)
-                            }
-                    }
-                }
-            }
-            .sheet(item: $sheetDate) {
-                selectionObs.firstDate = nil
-            } content: { sheet in
-                YTHourShift(obs: .init(modelContainer: moc.container, date: sheet.date))
-            }
+            
+            // sendAllButton
+            //    Spacer()
         }
     }
     
@@ -67,24 +76,67 @@ struct YTCalendarPicker: View {
                     ForEach(obs.weeks[index], id: \.self) { date in
                         YTCalendarCell(cellDate: date, startMonthDate: obs.startMonthDate, size: cellSize, selectedObs: selectionObs) { date in
                             selectionObs.handleSelectedDate(at: index, with: date)
+                            sheetDate = .init(date: date)
                         }
                     }
                 }
             }
-
+            
         }
     }
+    
+    @ToolbarContentBuilder
+    func calendarToolBar() -> some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                self.sheetTeam = .init()
+            } label: {
+                VStack {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.blue.gradient.opacity(1.0))
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .overlay {
+                            VStack {
+                                Image(systemName: "plus")
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                    
+                    Text("Team")
+                        .font(.body)
+                        .fontWidth(.condensed)
+                        .fontDesign(.rounded)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                }
+                
+            }
+        }
+    }
+    
+    
+    //    @ViewBuilder
+    //    var sendAllButton: some View {
+    //        if selectionObs.count > 0 {
+    //            HStack {
+    //                Spacer()
+    //                Button {
+    //
+    //                } label: {
+    //                    Label("Send all", systemImage: "paperplane")
+    //                        .foregroundStyle(.white)
+    //                        .padding(6)
+    //                        .background(RoundedRectangle(cornerRadius: 4).fill(Color.blue.gradient))
+    //                }
+    //            }
+    //            .padding(.horizontal)
+    //        }
+    //    }
 }
 
-struct SheetDate: Identifiable {
-    
-    var id: TimeInterval {
-        date.timeIntervalSince1970
-    }
-    let date: Date
-}
 
 #Preview {
-    YTCalendarPicker()
+    @Previewable @Environment(\.modelContext) var moc
+    YTCalendarPicker(selectionObs: .init(history: BackgroundSerialPersistenceActor(container: moc.container)))
         .preferredColorScheme(.dark)
 }

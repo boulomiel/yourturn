@@ -54,7 +54,6 @@ struct YTPopupView<Info: YTInfoPopupProtocol, Error: YTErrorPopupProtocol>: View
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
                     .matchedGeometryEffect(id: "error", in: pickerSpace, anchor: .center, isSource: true)
                     .frame(width: 300, height: 50)
-                
             default:
                 Capsule()
                     .fill(Color.white.opacity(0.1))

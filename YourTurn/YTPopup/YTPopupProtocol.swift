@@ -24,7 +24,7 @@ protocol YTInfoPopupProtocol: Equatable {
     var localizedDescription: String { get }
 }
 
-enum YTPopupState<Info: YTInfoPopupProtocol, Fail: YTErrorPopupProtocol> {
+enum YTPopupState<Info: YTInfoPopupProtocol, Fail: YTErrorPopupProtocol>: Equatable {
     
     case idle
     case info(info: Info)

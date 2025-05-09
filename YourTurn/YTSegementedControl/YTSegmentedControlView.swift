@@ -44,7 +44,7 @@ struct YTSegmentedControlView<Case: YTSegmentValueCase>: View {
                     }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: 35)
+        .frame(width: 220, height: 35)
         .background {
             Capsule()
                 .fill(Color.blue.gradient)

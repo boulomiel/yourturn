@@ -9,27 +9,6 @@ import SwiftUI
 import Combine
 import NaturalLanguage
 
-struct YTPerson: Hashable, YTCSVConvertible {
-    
-    static var csvHeader: String {
-        "Name,Time"
-    }
-    
-    
-    var csvRow: String {
-        "\(name), \(period)"
-    }
-    
-    let name: String
-    var time: Date?
-    
-    
-    var period: String {
-        time?.hoursAndMinutesPeriod ?? ""
-    }
-    
-}
-
 struct YTPersonListView: View {
     
     
@@ -47,7 +26,9 @@ struct YTPersonListView: View {
             }
             .onDelete { indexSet in
                 obs.cellObs.remove(atOffsets: indexSet)
-                onPersonAdded(obs.cellObs.map { YTPerson(name: $0.name, time: $0.time) }.filter { !$0.name.isEmpty })
+                withAnimation(.easeInOut) {
+                    onPersonAdded(obs.cellObs.map { YTPerson(name: $0.name, time: $0.time) }.filter { !$0.name.isEmpty })
+                }
             }
         }
         .onTapGesture {
@@ -58,7 +39,9 @@ struct YTPersonListView: View {
             if case let .get(name: name) =  event {
                 obs.cellObs[obs.cellObs.count-1].name = name
                 obs.onAddingNameTapped()
-                onPersonAdded(obs.cellObs.map { YTPerson(name: $0.name, time: $0.time) }.filter { !$0.name.isEmpty })
+                withAnimation(.easeInOut) {
+                    onPersonAdded(obs.cellObs.map { YTPerson(name: $0.name, time: $0.time) }.filter { !$0.name.isEmpty })
+                }
             }
         })
         
@@ -92,27 +75,6 @@ struct YTPersonListView: View {
         .frame(height: 60)
     }
 }
-
-
-enum NameErrors {
-    case idle
-    case emptyName
-    case tooShort
-    case nameAlreadyExists
-}
-
-
-extension NLLanguage {
-    var isRightToLeft: Bool {
-        switch self {
-        case .hebrew, .arabic, .persian, .urdu:
-            true
-        default:
-            false
-        }
-    }
-}
-
 
 #Preview {
     YTPersonListView(obs: .init(person: [])) { _ in }
