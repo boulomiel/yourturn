@@ -70,7 +70,7 @@ struct YTSelectionNameCell: View {
         func detectLanguageDirection(text: String) {
             languageRecognizer.processString(text)
             if let language = languageRecognizer.dominantLanguage {
-            self.isRightToLeft = language.isRightToLeft
+                self.isRightToLeft = language.isRightToLeft
             }
         }
         
@@ -86,7 +86,7 @@ struct YTSelectionNameCell: View {
                 .removeDuplicates()
                 .receive(on: DispatchQueue.main)
                 .sink(receiveValue: {[weak self] name in
-                   self?.detectLanguageDirection(text: name)
+                    self?.detectLanguageDirection(text: name)
                 })
         }
     }

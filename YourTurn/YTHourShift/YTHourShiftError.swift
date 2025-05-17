@@ -6,14 +6,18 @@
 //
 
 
-enum YTHourShiftError: YTErrorPopupProtocol {
+enum YTHourShiftError: YTErrorPopupProtocol, Error {
 
     case error
+    case nameErrors(YTNameError)
+
     
     var localizedDescription: String {
         switch self {
         case .error:
             ""
+        case .nameErrors(let error):
+            error.localizedDescription
         }
     }
 }

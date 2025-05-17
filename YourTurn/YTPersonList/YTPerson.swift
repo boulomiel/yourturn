@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct YTPerson: Hashable, YTCSVConvertible {
+struct YTPerson: Equatable, YTCSVConvertible, Identifiable {
     
     static var csvHeader: String {
         "Name,Time"
@@ -18,9 +18,9 @@ struct YTPerson: Hashable, YTCSVConvertible {
         "\(name), \(period)"
     }
     
-    let name: String
+    let id: UUID = .init()
+    var name: String
     var time: Date?
-    
     
     var period: String {
         time?.hoursAndMinutesPeriod ?? ""

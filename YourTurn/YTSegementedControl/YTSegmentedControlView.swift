@@ -16,7 +16,7 @@ struct YTSegmentedControlView<Case: YTSegmentValueCase>: View {
     @Binding var selectedCase: Case
     
     var body: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 10) {
             ForEach(cases, id: \.self) { value in
                 Text(value.name)
                     .font(.subheadline)
@@ -44,7 +44,6 @@ struct YTSegmentedControlView<Case: YTSegmentValueCase>: View {
                     }
             }
         }
-        .frame(width: 220, height: 35)
         .background {
             Capsule()
                 .fill(Color.blue.gradient)
@@ -56,6 +55,6 @@ struct YTSegmentedControlView<Case: YTSegmentValueCase>: View {
 
 
 #Preview {
-    @Previewable @State var selectedCase: YTSelectionCase = .byDay
-    YTSegmentedControlView(cases: YTSelectionCase.allCases, selectedCase: $selectedCase)
+    @Previewable @State var selectedCase: YTShiftCase = .persons
+    YTSegmentedControlView(cases: YTShiftCase.allCases, selectedCase: $selectedCase)
 }

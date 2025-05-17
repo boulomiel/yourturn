@@ -16,7 +16,8 @@ struct YTAddTeamView: View {
     @Environment(\.dismiss) var dimiss
     @State private var teamName: String = ""
     
-    @State var obs: YTAddTeanObs
+    // - Constructor
+    @State var obs: YTAddTeanObs = .init()
     
     var body: some View {
         NavigationStack {

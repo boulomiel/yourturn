@@ -7,22 +7,34 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 @Observable
 @MainActor
 class YTHourShiftObs {
-    
+        
+    // - States
     var shiftCase: YTShiftCase
-    
     var startHour: Date
     var endHour: Date
-    var persons: [YTPerson]
     var popupState: YTPopupState<YTHourShiftInfo, YTHourShiftError>
-    let converter: YTCSVConverter
     var shareLink: URL?
-    let locolStorage = YTLocalStorage()
     var shiftIdentifier: PersistentIdentifier?
+   // var persons: [YTPerson]
     
+    // -  Store
+    var shiftStore: YTHourShiftStore
+    var persons: [YTPerson] {
+        get {
+            shiftStore.persons
+        }
+        set {
+            shiftStore.setPersons(newValue)
+        }
+    }
+    let converter: YTCSVConverter
+    let getNameEvent: PassthroughSubject<FocusAppearField.FAFEvent, Never> = .init()
+
     // Constructor
     let history: BackgroundSerialPersistenceActor
     let modelContainer: ModelContainer
@@ -41,9 +53,9 @@ class YTHourShiftObs {
 //            advanced += 60 * TimeInterval(minutes)
 //        }
 //        let start = date.advanced(by: advanced)
+        self.shiftStore = .init(persons: [.init(name: "", time: nil)], stations: [])
         self.startHour = date
         self.endHour = date.advanced(by: 60 * 60 / 2)
-        self.persons = []
         self.popupState = .idle
         self.converter = .init()
         self.modelContainer = modelContainer
@@ -66,6 +78,8 @@ class YTHourShiftObs {
                 self.popupState = .info(info: .timePerPerson(time: time))
             }
             attributeTime()
+            saveCSV()
+            saveCurrentList()
         }
     }
     
@@ -89,22 +103,20 @@ class YTHourShiftObs {
         guard let timePerPerson = getTimePerPerson() else {
             return
         }
-        var copy = persons
+        var copy = shiftStore.persons
         for i in 0..<copy.count {
             let date = startHour.advanced(by: Double(i) * timePerPerson)
             copy[i].time = date
         }
-        self.persons = copy
-        saveCSV()
-        saveCurrentList()
+        self.shiftStore.setPersons(copy)
     }
     
     private func saveCSV() {
-        shareLink = converter.generatePDF(from: persons)
+        shareLink = converter.generatePDF(from: shiftStore.persons)
     }
     
     private func getTimePerPerson() -> TimeInterval? {
-        let count = persons.count
+        let count = shiftStore.persons.count
         guard count > 1 else {
             removeCurrentShift()
             return nil
@@ -135,7 +147,7 @@ class YTHourShiftObs {
             
             let result = try moc.fetch(descriptor)
             if let dateFound = result.first {
-                self.persons = dateFound.persons.map { YTPerson(name: $0) }
+                self.shiftStore.setPersons(dateFound.persons.map { YTPerson(name: $0) })
                 self.startHour = dateFound.startDate
                 self.endHour = dateFound.endDate
                 self.shiftIdentifier = dateFound.id
@@ -157,7 +169,7 @@ class YTHourShiftObs {
     }
     
     func saveCurrentList() {
-        let usernames = persons.map(\.name)
+        let usernames = shiftStore.persons.map(\.name).filter { !$0.isEmpty }
         let moc = modelContainer.mainContext
         let shift = Shift(date: date, startDate: startHour, endDate: endHour, data: YTStorage.archiveStringArray(object: usernames))
         do {

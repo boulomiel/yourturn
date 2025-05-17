@@ -9,7 +9,7 @@ import SwiftUI
 
 struct YTPersonList: View {
     
-    @Bindable var obs: YTHourShiftObs
+    @Environment(YTHourShiftObs.self) var hourShiftObs
     @State private var fetchCount: Int = 0
     @State private var sheetTeam: SheetTeam?
     @State private var selectedTeamName: String?
@@ -19,25 +19,23 @@ struct YTPersonList: View {
             headerSection
 
             Section {
-                YTPersonListView(obs:.init(person: obs.persons)) { names in
-                    obs.persons = names
-                }
+                YTPersonListView()
             } header: {
                 Text("Members")
             }
 
         }
-        .onChange(of: obs.persons, { oldValue, newValue in
-            obs.timePerPerson()
+        .onChange(of: hourShiftObs.shiftStore, { oldValue, newValue in
+            hourShiftObs.timePerPerson()
         })
         .onAppear {
             fetchTeamCount()
-            obs.timePerPerson()
+            hourShiftObs.timePerPerson()
         }
         .sheet(item: $sheetTeam, onDismiss: {
             fetchTeamCount()
         }, content: { _ in
-            YTAddTeamView(obs: .init())
+            YTAddTeamView()
         })
         .tag(YTShiftCase.persons)
     }
@@ -56,7 +54,7 @@ struct YTPersonList: View {
             NavigationLink {
                 YTTeamListView { result in
                     selectedTeamName = result.team
-                    obs.persons = result.persons
+                    hourShiftObs.shiftStore.setPersons(result.persons)
                 }
             } label: {
                 Text(selectedTeamName ?? "Teams list")
@@ -89,13 +87,14 @@ struct YTPersonList: View {
     
     private func fetchTeamCount() {
        // Task {
-            fetchCount = obs.fetchTeamCount()
+            fetchCount = hourShiftObs.fetchTeamCount()
        // }
     }
 }
 
 #Preview {
-    @Previewable @Environment(\.modelContext) var moc
-    YTPersonList(obs: .init(modelContainer: moc.container, date: .now))
+    @Previewable @State var hourshiftObs: YTHourShiftObs = .init(modelContainer: YourTurnApp.previewContainer, date: .now)
+    YTPersonList()
+        .environment(hourshiftObs)
         .preferredColorScheme(.dark)
 }

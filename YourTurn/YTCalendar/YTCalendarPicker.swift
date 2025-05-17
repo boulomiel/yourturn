@@ -57,12 +57,8 @@ struct YTCalendarPicker: View {
                 let size = geo.size
                 if !obs.weeks.isEmpty {
                     calendarGridView(size: size)
-                    //   .position(x: geo.size.width * 0.5, y: geo.size.height * 0.5)
                 }
             }
-            
-            // sendAllButton
-            //    Spacer()
         }
     }
     

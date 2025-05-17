@@ -25,45 +25,22 @@ struct YTHourShift: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    HStack {
-                        YTSegmentedControlView(cases: YTShiftCase.allCases, selectedCase: $obs.shiftCase)
+                    YTHourShiftPrincipalToolbar(shiftCase: $obs.shiftCase,
+                                                shareLink: obs.shareLink,
+                                                personCount: obs.persons.count, saveCurrentList: {
+                        obs.saveCurrentList()
+                        dismiss.callAsFunction()
                         
-                        if obs.persons.count > 1 {
-                            Spacer()
-                            Button {
-                                obs.saveCurrentList()
-                                dismiss.callAsFunction()
-                            } label: {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Color.blue.gradient.opacity(1.0))
-                                    .frame(width: 30, height: 30, alignment: .center)
-                                    .overlay {
-                                        Image(systemName: "tray.and.arrow.down")
-                                            .foregroundStyle(.white)
-                                    }
-                            }
-                            .transition(.scale)
-                        }
-                        
-                        if let fileURL = obs.shareLink, obs.persons.count > 1 {
-                            ShareLink(item: fileURL) {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Color.blue.gradient.opacity(1.0))
-                                    .frame(width: 30, height: 30, alignment: .center)
-                                    .overlay {
-                                        Image(systemName: "square.and.arrow.up")
-                                            .foregroundStyle(.white)
-                                    }
-                            }
-                            .transition(.move(edge: .trailing))
-                        }
-                    }
+                    })
                 }
+                
                 ToolbarItem(placement: .bottomBar) {
                     YTPopupView(state: obs.popupState)
                 }
             }
         }
+        .animation(.default, value: obs.persons)
+        .animation(.bouncy, value: obs.shareLink)
     }
     
     @ViewBuilder
@@ -72,17 +49,22 @@ struct YTHourShift: View {
             YTTimeline(obs: obs)
                 .tag(YTShiftCase.time)
             
-            YTPersonList(obs: obs)
+            YTPersonList()
+                .environment(obs)
                 .tag(YTShiftCase.persons)
+            
+            YTStationView(shiftStore: $obs.shiftStore, popupState: $obs.popupState)
+                .tag(YTShiftCase.stations)
         }
         .tabViewStyle(.automatic)
+        .safeAreaPadding(.all)
     }
 }
 
 #Preview {
-    @Previewable @Environment(\.modelContext) var moc
-    
-    YTHourShift(obs: .init(modelContainer: moc.container, date: .now))
+    let container = YourTurnApp.previewContainer
+    let moc = container.mainContext
+    YTHourShift(obs: .init(modelContainer: container, date: .now))
         .preferredColorScheme(.dark)
         .onAppear {
             let teamNames = ["Paul", "Jhon", "Flock", "Pouf", "Chocolate"]
@@ -90,6 +72,10 @@ struct YTHourShift: View {
             
             moc.insert(team)
             
-            try! moc.save()
+            do {
+                try moc.save()
+            } catch {
+                print(error)
+            }
         }
 }

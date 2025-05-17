@@ -10,6 +10,7 @@ enum YTShiftCase: YTSegmentValueCase {
     
     case time
     case persons
+    case stations
     
     var name: String {
         switch self {
@@ -17,6 +18,8 @@ enum YTShiftCase: YTSegmentValueCase {
             "Time"
         case .persons:
             "Persons"
+        case .stations:
+            "Stations"
         }
     }
 }

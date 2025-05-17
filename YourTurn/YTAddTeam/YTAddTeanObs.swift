@@ -21,8 +21,8 @@ import SwiftUI
 class YTAddTeanObs {
     
     var cellObs: [YTSelectionNameCell.Obs]
-    var nameError: NameErrors = .idle
-    var popupState: YTPopupState<YTHourShiftInfo, NameErrors>
+    var nameError: YTNameError = .idle
+    var popupState: YTPopupState<YTHourShiftInfo, YTNameError>
     var showTextError: Bool = false
     let languageRecognizer: NLLanguageRecognizer = .init()
     let getNameEvent: PassthroughSubject<FocusAppearField.FAFEvent, Never> = .init()
@@ -52,7 +52,7 @@ class YTAddTeanObs {
         getNameEvent.send(.received)
     }
     
-    func toggleError(error: NameErrors) {
+    func toggleError(error: YTNameError) {
         withAnimation {
             popupState = .error(error: error)
         } completion: {

@@ -5,7 +5,7 @@
 //  Created by Ruben Mimoun on 06/05/2025.
 //
 
-enum NameErrors: YTErrorPopupProtocol {
+enum YTNameError: YTErrorPopupProtocol, Error {
     var localizedDescription: String {
         switch self {
         case .idle:
