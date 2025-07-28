@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065A2E362C7F0072A6D3 /* SBHistory */; };
+		87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065D2E363AAA0072A6D3 /* SBExtensions */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		870BD2C12DC78DD300D9955A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */,
+				87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +98,7 @@
 				870BD2B32DC78DD100D9955A /* ShiftBee */,
 				870BD2C32DC78DD300D9955A /* ShiftBeeTests */,
 				870BD2CD2DC78DD300D9955A /* ShiftBeeUITests */,
+				87DB06592E362C7F0072A6D3 /* Frameworks */,
 				870BD2B22DC78DD100D9955A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +111,13 @@
 				870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		87DB06592E362C7F0072A6D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +140,8 @@
 			);
 			name = ShiftBee;
 			packageProductDependencies = (
+				87DB065A2E362C7F0072A6D3 /* SBHistory */,
+				87DB065D2E363AAA0072A6D3 /* SBExtensions */,
 			);
 			productName = YourTurn;
 			productReference = 870BD2B12DC78DD100D9955A /* ShiftBee.app */;
@@ -208,6 +225,10 @@
 			);
 			mainGroup = 870BD2A82DC78DD100D9955A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				87DB05782E362C2A0072A6D3 /* XCLocalSwiftPackageReference "SBHistory" */,
+				87DB065C2E363AA00072A6D3 /* XCLocalSwiftPackageReference "SBExtensions" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 870BD2B22DC78DD100D9955A /* Products */;
 			projectDirPath = "";
@@ -413,6 +434,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = STFH26U9BW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
@@ -430,10 +454,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
@@ -449,6 +475,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = STFH26U9BW;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
@@ -466,10 +495,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
@@ -589,6 +620,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		87DB05782E362C2A0072A6D3 /* XCLocalSwiftPackageReference "SBHistory" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SBHistory;
+		};
+		87DB065C2E363AA00072A6D3 /* XCLocalSwiftPackageReference "SBExtensions" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SBExtensions;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		87DB065A2E362C7F0072A6D3 /* SBHistory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87DB05782E362C2A0072A6D3 /* XCLocalSwiftPackageReference "SBHistory" */;
+			productName = SBHistory;
+		};
+		87DB065D2E363AAA0072A6D3 /* SBExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87DB065C2E363AA00072A6D3 /* XCLocalSwiftPackageReference "SBExtensions" */;
+			productName = SBExtensions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 870BD2A92DC78DD100D9955A /* Project object */;
 }

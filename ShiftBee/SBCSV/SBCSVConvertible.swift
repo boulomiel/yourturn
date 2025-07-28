@@ -7,7 +7,8 @@
 
 import Foundation
 
-protocol SBCSVConvertible {
+public protocol SBCSVConvertible {
     static var csvHeader: String { get }
     var csvRow: String { get }
+    var maxNameWidth: CGFloat { get }
 }
