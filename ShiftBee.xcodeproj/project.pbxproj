@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		873F90BD2E38C60F003954F0 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 873F90BC2E38C60F003954F0 /* SBExtensions */; };
 		87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065A2E362C7F0072A6D3 /* SBHistory */; };
 		87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065D2E363AAA0072A6D3 /* SBExtensions */; };
 /* End PBXBuildFile section */
@@ -79,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				873F90BD2E38C60F003954F0 /* SBExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +167,7 @@
 			);
 			name = ShiftBeeTests;
 			packageProductDependencies = (
+				873F90BC2E38C60F003954F0 /* SBExtensions */,
 			);
 			productName = YourTurnTests;
 			productReference = 870BD2C02DC78DD300D9955A /* ShiftBeeTests.xctest */;
@@ -518,14 +521,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurnTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.ShiftBeeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YourTurn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YourTurn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShiftBee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ShiftBee";
 			};
 			name = Debug;
 		};
@@ -537,14 +540,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurnTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.ShiftBeeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YourTurn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YourTurn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShiftBee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ShiftBee";
 			};
 			name = Release;
 		};
@@ -635,6 +638,11 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		873F90BC2E38C60F003954F0 /* SBExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87DB065C2E363AA00072A6D3 /* XCLocalSwiftPackageReference "SBExtensions" */;
+			productName = SBExtensions;
+		};
 		87DB065A2E362C7F0072A6D3 /* SBHistory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 87DB05782E362C2A0072A6D3 /* XCLocalSwiftPackageReference "SBHistory" */;

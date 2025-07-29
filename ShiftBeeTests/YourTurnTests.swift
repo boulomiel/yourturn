@@ -7,7 +7,7 @@
 
 import Testing
 import Foundation
-@testable import YourTurn
+@testable import ShiftBee
 
 struct YourTurnTests {
 

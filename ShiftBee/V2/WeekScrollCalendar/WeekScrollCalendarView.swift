@@ -102,11 +102,6 @@ struct WeekScrollCalendarView: View {
     }
 }
 
-
-
-
-
-
 #Preview {
     WeekScrollCalendarView()
 }

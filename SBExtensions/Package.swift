@@ -10,7 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "SBExtensions",
-            targets: ["SBExtensions"]
+            targets: ["SBExtensions", "SBExtensionsTests"]
         ),
     ],
     targets: [
@@ -20,6 +20,10 @@ let package = Package(
             name: "SBExtensions",
             swiftSettings: [.defaultIsolation(MainActor.self)]
         ),
-
+        .testTarget(
+            name: "SBExtensionsTests",
+            dependencies: ["SBExtensions"],
+            swiftSettings: [.defaultIsolation(MainActor.self)]
+        )
     ]
 )
