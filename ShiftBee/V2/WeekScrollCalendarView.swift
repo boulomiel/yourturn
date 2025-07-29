@@ -239,6 +239,15 @@ class WeekDayCalendarObs {
     }
     
     func add(_ event: CalendarTask) {
+        let taskRanges = calendarTasks.reduce(into: Set<Range<Date>>()) { result, task in
+            result.insert(task.start..<task.end)
+        }
+        let eventRange = event.start..<event.end
+        for range in taskRanges {
+            if eventRange.overlaps(range) {
+                return
+            }
+        }
         self.calendarTasks.append(event)
         self.calendarTasks = self.calendarTasks.sorted(by: { $0.start < $1.start })
     }
@@ -282,19 +291,16 @@ struct WeekDayCalendarView: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
             ScrollView {
-                let frame = geo.frame(in: .global)
-                TaskContent(width: frame.width, height: frame.height)
+                TaskContent()
             }
             .safeAreaPadding(.all)
-        }
     }
     
     @ViewBuilder
-    private func TaskContent(width: CGFloat, height: CGFloat) -> some View {
+    private func TaskContent() -> some View {
         if obs.calendarTasks.isEmpty {
-            TaskEmptyListView(width: width, height: height)
+            TaskEmptyListView()
         } else {
             LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
                 ForEach(obs.calendarTasks, id: \.self) { event in
@@ -357,27 +363,56 @@ struct WeekDayCalendarView: View {
         }
     }
     
-    private func TaskEmptyListView(width: CGFloat, height: CGFloat) -> some View {
-        VStack(alignment: .center) {
-            GlassEffectContainer {
-                Image(systemName: "beach.umbrella")
-                    .font(.system(size: 120))
-                    .foregroundStyle(.blue.gradient)
-                    .glassEffect()
-                    .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
-                    .overlay(alignment: .bottomLeading) {
-                        Image(systemName: "cup.and.heat.waves.fill")
-                            .font(.system(size: 40))
-                            .foregroundStyle(.blue.gradient)
-                            .glassEffect()
-                            .offset(x: -20)
-                            .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
-                        
-                    }
-            }
+    private func TaskEmptyListView() -> some View {
+        GlassEffectContainer(spacing: 50) {
+            Image(systemName: "beach.umbrella")
+                .font(.system(size: 120))
+                .foregroundStyle(.blue.gradient)
+                .glassEffect(.regular.interactive())
+                .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
+                .overlay(alignment: .bottomLeading) {
+                    Image(systemName: "cup.and.heat.waves.fill")
+                        .font(.system(size: 40))
+                        .padding(8)
+                        .foregroundStyle(.blue.gradient)
+                        .glassEffect(.regular.interactive())
+                        .offset(x: -50)
+                        .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
+                    
+                }
+                .overlay(alignment: .topTrailing) {
+                    Image(systemName: "books.vertical")
+                        .font(.system(size: 30))
+                        .padding(8)
+                        .foregroundStyle(.blue.gradient)
+                        .glassEffect(.regular.interactive())
+                        .offset(x: 30 ,y: -30)
+                        .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
+                    
+                }
+                .overlay(alignment: .bottomTrailing) {
+                    Image(systemName: "gamecontroller")
+                        .font(.system(size: 30))
+                        .padding(8)
+                        .foregroundStyle(.blue.gradient)
+                        .glassEffect(.regular.interactive())
+                        .offset(x: 40 ,y: 20)
+                        .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
+                        .overlay(alignment: .bottomLeading) {
+                            Text("Nothing Scheduled")
+                                .font(.system(size: 22).bold())
+                                .foregroundStyle(.blue.gradient)
+                                .fixedSize(horizontal: true, vertical: true)
+                                .padding(12)
+                                .glassEffect(.regular.interactive())
+                                .offset(x: -120 ,y: 65)
+                                .glassEffectUnion(id: "EmptyTask", namespace: emptyTaskUnion)
+                        }
+                }
+            
         }
-        .frame(width: width, height: height)
-        .background(Color.red)
+        .frame(maxWidth: .infinity)
+        .padding(.top, 80)
     }
     
     private func TaskColor(_ timeState: CalendarTask.TimeState) -> Color {
