@@ -20,7 +20,7 @@ struct SBCalendarCell: View {
         
     private var isEnabled: Bool {
         cellDate >= startMonthDate &&
-        cellDate.day >= Date.now.day
+        cellDate.dayNumber >= Date.now.dayNumber
     }
     
     @Environment(\.modelContext) private var moc
@@ -54,7 +54,7 @@ struct SBCalendarCell: View {
     var body: some View {
         shape
             .overlay {
-                Text("\(cellDate.day)")
+                Text("\(cellDate.dayNumber)")
                     .font(.body)
                     .fontWeight(.bold)
                     .fontDesign(.rounded)
