@@ -33,6 +33,7 @@
 		870BD2B12DC78DD100D9955A /* ShiftBee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftBee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		870BD2C02DC78DD300D9955A /* ShiftBeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftBeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftBeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		87320E962E39EAB20065A6BE /* ShiftBee.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = ShiftBee.xctestplan; path = ShiftBeeTests/ShiftBee.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -97,6 +98,7 @@
 		870BD2A82DC78DD100D9955A = {
 			isa = PBXGroup;
 			children = (
+				87320E962E39EAB20065A6BE /* ShiftBee.xctestplan */,
 				870BD2B32DC78DD100D9955A /* ShiftBee */,
 				870BD2C32DC78DD300D9955A /* ShiftBeeTests */,
 				870BD2CD2DC78DD300D9955A /* ShiftBeeUITests */,

@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "7C051073-34B1-4A5D-BA6F-5581D47ADB6E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ShiftBee.xcodeproj",
+      "identifier" : "870BD2B02DC78DD100D9955A",
+      "name" : "ShiftBee"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ShiftBee.xcodeproj",
+        "identifier" : "870BD2BF2DC78DD300D9955A",
+        "name" : "ShiftBeeTests"
+      }
+    }
+  ],
+  "version" : 1
+}
