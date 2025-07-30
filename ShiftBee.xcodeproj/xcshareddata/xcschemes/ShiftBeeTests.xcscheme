@@ -35,6 +35,20 @@
                ReferencedContainer = "container:SBExtensions">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "870BD2B02DC78DD100D9955A"
+               BuildableName = "ShiftBee.app"
+               BlueprintName = "ShiftBee"
+               ReferencedContainer = "container:ShiftBee.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -89,6 +103,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "870BD2B02DC78DD100D9955A"
+            BuildableName = "ShiftBee.app"
+            BlueprintName = "ShiftBee"
+            ReferencedContainer = "container:ShiftBee.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

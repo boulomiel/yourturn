@@ -69,29 +69,8 @@ public struct DateStore: DateStoreProtocol {
     /// - Parameter from: The date we want to find the week which contains it
     /// - Returns: An array of week day from sunday to saturday including the base date
     public func getWeek(from base:  Date) -> [Date] {
-        
-        // Makes the date clean
-        guard let midDayDate = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: base) else {
-            return []
-        }
-        var weekDays: [Date] = [midDayDate]
-        
-        var day = Calendar.current.component(.weekday, from: midDayDate)
-        
-        while day > 1 {
-            if let previousDate = Calendar.current.date(byAdding: .day, value: -1, to: weekDays.last!) {
-                weekDays.append(previousDate)
-            }
-            day -= 1
-        }
-        
-        day = Calendar.current.component(.weekday, from: midDayDate)
-        while day < 7 {
-            if let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: weekDays.last!) {
-                weekDays.append(nextDay)
-            }
-            day += 1
-        }
+
+        var weekDays: [Date] = []
         
         guard let weekForDate = Calendar.current.dateInterval(of: .weekOfMonth, for: base) else {
             return []

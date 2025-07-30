@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "3E27D4FC-DE38-4735-8316-EE03095D2AB0",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SBExtensionsTests",
+        "name" : "SBExtensionsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

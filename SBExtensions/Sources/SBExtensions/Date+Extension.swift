@@ -77,13 +77,12 @@ public extension Date {
         }
         
         let startOfWeek = weekForDate.start
-        var days: [WeekDay] = []
-        (0..<7).compactMap { index in
+        return (0..<7).compactMap { index -> WeekDay? in
             if let day =  Calendar.current.date(byAdding: .day, value: index, to: startOfWeek) {
-                days.append(.init(date: day))
+                return .init(date: day)
             }
+            return nil
         }
-        return days
     }
     
     
@@ -116,7 +115,8 @@ public extension Date {
     func isSameDay(as date: Date) -> Bool {
         Calendar.current.isDate(self, inSameDayAs: date)
     }
-    public struct WeekDay: Identifiable, Hashable {
+    
+    struct WeekDay: Identifiable, Hashable {
         public let id: UUID = .init()
         public let date: Date
     }
