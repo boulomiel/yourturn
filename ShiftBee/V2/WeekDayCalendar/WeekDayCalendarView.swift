@@ -9,6 +9,8 @@ import SwiftUI
 
 struct WeekDayCalendarView: View {
     
+    @Environment(FloattingButtonActionHandler.self) var floatingActionHandler
+    
     private var obs: WeekDayCalendarObs
     @Namespace private var indicator
     @Namespace var rowSpace
@@ -22,6 +24,11 @@ struct WeekDayCalendarView: View {
                 TaskContent()
             }
             .safeAreaPadding(.all)
+            .onAppear {
+                floatingActionHandler.onJumpToToDay = { print("on Jump To ToDay")}
+                floatingActionHandler.onShowCalendarList = { print("Show Caledar List") }
+            }
+        
     }
     
     @ViewBuilder

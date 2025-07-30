@@ -10,10 +10,10 @@ import SwiftUI
 
 struct WeekScrollCalendarView: View {
     
+    @Environment(FloattingButtonActionHandler.self) private var floatingActionHandler
     @State private var obs: WeekScrollCalendarObs
     @Namespace private var selectedDateNamespace
-    
-    // Constants
+        // Constants
     let weekCreationOffset: CGFloat = 15
     
     init(obs: WeekScrollCalendarObs = .init(startDate: .now)) {
@@ -27,6 +27,10 @@ struct WeekScrollCalendarView: View {
             WeekDayCalendarView(obs: .init(currentSelectedDate: obs.headerDate))
         }
         .preferredColorScheme(.dark)
+        .onAppear {
+            floatingActionHandler.onAddNewEvent = { print("on Add New Event") }
+            floatingActionHandler.onShowCalendarList = { print("Show Caledar List") }
+        }
     }
     
     @ViewBuilder
