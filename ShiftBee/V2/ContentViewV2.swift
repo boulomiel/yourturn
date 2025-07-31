@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SBHistory
 
 struct ContentViewV2: View {
     
+    @Environment(\.modelContext) var context
     @State private var router: BaseRouter = .init()
     let floatingActionHandler: FloattingButtonActionHandler = .init()
     
@@ -21,6 +23,8 @@ struct ContentViewV2: View {
                             label: "Add Event",
                             systemImage: "calendar.badge.plus",
                             action: {
+                                context.insert(SBActivity(title: "Test", taskDescription: "Because now time has come to testing proogress", startDate: .now, endDate: .now.addingTimeInterval(3600 * 3)))
+                                try? context.save()
                                 // Code to add a new event
                             }
                         )
@@ -47,7 +51,7 @@ struct ContentViewV2: View {
                 }
                 .environment(floatingActionHandler)
                 // Replace by fetched data from SwifData
-                .environment(CalendarTaskCRUDManager(calendarTasks: CalendarTask.mockEventsForCurrentWeek()))
+                .environment(CalendarTaskCRUDManager(calendarTasks: []))
         }
     }
 }
@@ -60,7 +64,7 @@ class FloattingButtonActionHandler {
 }
 
 
-#Preview {
+#Preview(traits: .modifier(CalendarTaskPreviewModifier())) {
     ContentViewV2()
 }
 

@@ -12,9 +12,11 @@ import SwiftUI
 @Observable
 class WeekDayCalendarObs {
     
+    let currentSelectedDate: Date
     var calendarTasks: [CalendarTask] = []
     
     init(currentSelectedDate: Date, in tasks: [CalendarTask]) {
+        self.currentSelectedDate = currentSelectedDate
         withAnimation {
             self.calendarTasks = tasks.filter { $0.start.isSameDay(as: currentSelectedDate ) }.sorted(by: { $0.start < $1.start })
         }

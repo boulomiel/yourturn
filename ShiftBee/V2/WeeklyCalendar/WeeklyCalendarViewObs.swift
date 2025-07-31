@@ -6,14 +6,17 @@
 //
 
 import SBExtensions
+import SwiftData
+import SBHistory
 import Foundation
 
 @Observable
-class WeekScrollCalendarObs {
+class WeeklyCalendarViewObs {
     
     var selectedWeekIndex: Int
     var currentWeeks: [[WeekDay]]
     var selectedDate: Int?
+    let startDate: Date
     private var canCreateWeek: Bool = false
     
     var headerDate: Date {
@@ -21,6 +24,7 @@ class WeekScrollCalendarObs {
     }
     
     init(startDate: Date) {
+        self.startDate = startDate.startOfDay
         let currentWeek = startDate.fetchWeek()
         let previousWeek = currentWeek[0].date.createPreviousWeek()
         let nextWeek = currentWeek[currentWeek.count-1].date.createNextWeek()

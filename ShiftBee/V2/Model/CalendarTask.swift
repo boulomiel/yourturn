@@ -15,11 +15,28 @@ struct CalendarTask: Identifiable, Hashable {
         case completed
     }
     
-    let id: UUID = .init()
+    let id: UUID
     var start: Date
     var end: Date
     var title: String
     var eventDescription: String?
+    
+    init(start: Date, end: Date, title: String, eventDescription: String? = nil) {
+        self.id = .init()
+        self.start = start
+        self.end = end
+        self.title = title
+        self.eventDescription = eventDescription
+    }
+        
+    init(id: UUID, start: Date, end: Date, title: String, eventDescription: String? = nil) {
+        self.id = id
+        self.start = start
+        self.end = end
+        self.title = title
+        self.eventDescription = eventDescription
+    }
+    
     
     var timeState: TimeState {
         if end < .now {

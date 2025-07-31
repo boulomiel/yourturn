@@ -16,11 +16,11 @@ extension ShiftBeeSchemaV2 {
         @Attribute(.unique)
         public var id: UUID
         public var title: String
-        public var taskDescription: String
+        public var taskDescription: String?
         public var startDate: Date
         public var endDate: Date
 
-        init(title: String, taskDescription: String, startDate: Date, endDate: Date) {
+        public init(title: String, taskDescription: String?, startDate: Date, endDate: Date) {
             self.id = .init()
             self.title = title
             self.taskDescription = taskDescription

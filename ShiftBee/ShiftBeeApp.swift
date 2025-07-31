@@ -35,14 +35,26 @@ struct ShiftBeeApp: App {
     }
 }
 
+struct Preview {
+    
+    let modelContainer: ModelContainer
+    
+    init() {
+        let schema = Schema(ShiftBeeSchemaV2.models)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+
+        do {
+            self.modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }
+}
+
 extension ShiftBeeApp {
     
     static var previewContainer: ModelContainer {
-        let schema = Schema([
-            Item.self,
-            SBShift.self,
-            SBTeam.self
-        ])
+        let schema = Schema(ShiftBeeSchemaV2.models)
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
 
         do {
@@ -53,7 +65,6 @@ extension ShiftBeeApp {
     }
     
     static let logger = Logger(subsystem: "com.shiftbee.SwiftData", category: "App")
-    // HINT: logger statements are optional
 
     static func setupModelContainer(for versionedSchema: VersionedSchema.Type = ShiftBeeSchemaV2.self, rollback: Bool = false) throws -> ModelContainer {
         do {

@@ -108,6 +108,10 @@ public extension Date {
         return previousLastDay.fetchWeek()
     }
     
+    var startOfDay: Date {
+        Calendar.current.startOfDay(for: self)
+    }
+    
     func isToday() -> Bool {
         Calendar.current.isDateInToday(self)
     }

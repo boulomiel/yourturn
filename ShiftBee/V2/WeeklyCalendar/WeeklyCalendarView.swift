@@ -7,18 +7,22 @@
 
 import SBExtensions
 import SwiftUI
+import SwiftData
+import SBHistory
 
 struct WeeklyCalendarView: View {
     
+    @Environment(\.modelContext) var moc
     @Environment(FloattingButtonActionHandler.self) private var floatingActionHandler
     @Environment(CalendarTaskCRUDManager.self) private var calendarManager
 
-    @State private var obs: WeekScrollCalendarObs
+    @State private var obs: WeeklyCalendarViewObs
     @Namespace private var selectedDateNamespace
+    
         // Constants
     let weekCreationOffset: CGFloat = 15
     
-    init(obs: WeekScrollCalendarObs = .init(startDate: .now)) {
+    init(obs: WeeklyCalendarViewObs = .init(startDate: .now)) {
         self.obs = obs
     }
     
@@ -26,7 +30,7 @@ struct WeeklyCalendarView: View {
         VStack {
             HeaderView()
             WeekSliderView()
-            WeekDayCalendarView(obs: .init(currentSelectedDate: obs.headerDate, in: calendarManager.calendarTasks))
+            WeekDayCalendarView(currentSelectedDate: obs.headerDate)
         }
         .preferredColorScheme(.dark)
         .onAppear {
@@ -58,7 +62,7 @@ struct WeeklyCalendarView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .onChange(of: obs.selectedWeekIndex, initial: false, obs.onSelectedWeekIndexChange(_:newIndex:))
-        .frame(height: 100)
+        .frame(height: 65)
     }
     
     func WeekView(week: [WeekDay]) -> some View {
@@ -107,8 +111,9 @@ struct WeeklyCalendarView: View {
     }
 }
 
-#Preview {
-    WeeklyCalendarView()
-        .environment(FloattingButtonActionHandler())
-        .environment(CalendarTaskCRUDManager(calendarTasks: CalendarTask.mockEventsForCurrentWeek()))
+#Preview(traits: .modifier(CalendarTaskPreviewModifier())) {
+//    WeeklyCalendarView()
+//        .environment(FloattingButtonActionHandler())
+//        .environment(CalendarTaskCRUDManager(calendarTasks: []))
+    ContentViewV2()
 }

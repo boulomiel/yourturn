@@ -6,23 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
+import SBHistory
+
+
 
 struct WeekDayCalendarView: View {
     
     @Environment(FloattingButtonActionHandler.self) var floatingActionHandler
+    @Environment(\.modelContext) private var moc
     
-    private var obs: WeekDayCalendarObs
     @Namespace private var indicator
-    @Namespace var rowSpace
+    @Namespace private var rowSpace
+    @Query private var activities: [SBActivity]
     
-    init(obs: WeekDayCalendarObs) {
-        self.obs = obs
+    init(currentSelectedDate: Date) {
+        let startDate = currentSelectedDate
+        let endDate = startDate.addingTimeInterval(60 * 60 * 24)
+        let predicate = #Predicate<SBActivity> { activity in
+            activity.startDate >= startDate && activity.endDate < endDate
+        }
+        let descriptor = FetchDescriptor(predicate: predicate, sortBy: [.init(\.startDate, order: .forward)])
+        self._activities = .init(descriptor, animation: .default)
     }
     
     var body: some View {
-            ScrollView {
-                TaskContent()
-            }
+        TaskContent()
             .safeAreaPadding(.all)
             .onAppear {
                 floatingActionHandler.onJumpToToDay = { print("on Jump To ToDay")}
@@ -33,19 +42,37 @@ struct WeekDayCalendarView: View {
     
     @ViewBuilder
     private func TaskContent() -> some View {
-        if obs.calendarTasks.isEmpty {
-            EmptyDailyView()
+        let calendarTasks = activities.map { activity -> CalendarTask in .init(id: activity.id, start: activity.startDate, end: activity.endDate, title: activity.title, eventDescription: activity.taskDescription) }
+        if calendarTasks.isEmpty {
+            ScrollView {
+                EmptyDailyView()
+            }
         } else {
-            LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
-                ForEach(obs.calendarTasks, id: \.self) { event in
+            List {
+                ForEach(calendarTasks, id: \.self) { event in
                     Section {
                         TaskRow(event)
                     } header: {
                         TaskHeader(event)
                     }
-                    .transition(.slide)
                 }
+                .onDelete(perform: { indexSet in
+                    let calendarTask = calendarTasks[indexSet.count-1]
+                    guard let toRemove = activities.first(where: { $0.id == calendarTask.id }) else {
+                        return
+                    }
+                    do {
+                        moc.delete(toRemove)
+                        try moc.save()
+                    } catch {
+                        ShiftBeeApp.logger.error("\(#function) - \(error)")
+                    }
+                })
+                .listSectionSeparator(.hidden)
+                .listSectionSpacing(.compact)
+                .listRowBackground(Color.clear)
             }
+            .listStyle(.inset)
         }
     }
     
@@ -87,7 +114,6 @@ struct WeekDayCalendarView: View {
                 .fill(TaskColor(event.timeState))
                 .frame(width: 12, height: 12, alignment: .leading)
                 .glassEffect()
-                .offset(x: -4)
                 .glassEffectUnion(id: "scroll", namespace: indicator)
             
             
@@ -95,6 +121,7 @@ struct WeekDayCalendarView: View {
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .offset(x: 4)
     }
     
     private func TaskColor(_ timeState: CalendarTask.TimeState) -> Color {
@@ -107,4 +134,12 @@ struct WeekDayCalendarView: View {
                 .gray.opacity(0.4)
         }
     }
+}
+
+
+#Preview(traits: .modifier(CalendarTaskPreviewModifier())) {
+//    WeeklyCalendarView()
+//        .environment(FloattingButtonActionHandler())
+//        .environment(CalendarTaskCRUDManager(calendarTasks: []))
+    ContentViewV2()
 }
