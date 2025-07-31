@@ -8,9 +8,11 @@
 import SBExtensions
 import SwiftUI
 
-struct WeekScrollCalendarView: View {
+struct WeeklyCalendarView: View {
     
     @Environment(FloattingButtonActionHandler.self) private var floatingActionHandler
+    @Environment(CalendarTaskCRUDManager.self) private var calendarManager
+
     @State private var obs: WeekScrollCalendarObs
     @Namespace private var selectedDateNamespace
         // Constants
@@ -24,11 +26,10 @@ struct WeekScrollCalendarView: View {
         VStack {
             HeaderView()
             WeekSliderView()
-            WeekDayCalendarView(obs: .init(currentSelectedDate: obs.headerDate))
+            WeekDayCalendarView(obs: .init(currentSelectedDate: obs.headerDate, in: calendarManager.calendarTasks))
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            floatingActionHandler.onAddNewEvent = { print("on Add New Event") }
             floatingActionHandler.onShowCalendarList = { print("Show Caledar List") }
         }
     }
@@ -107,5 +108,7 @@ struct WeekScrollCalendarView: View {
 }
 
 #Preview {
-    WeekScrollCalendarView()
+    WeeklyCalendarView()
+        .environment(FloattingButtonActionHandler())
+        .environment(CalendarTaskCRUDManager(calendarTasks: CalendarTask.mockEventsForCurrentWeek()))
 }

@@ -1,23 +1,19 @@
 //
-//  WeekDayCalendarObs.swift
+//  CalendarTaskCRUDManager.swift
 //  ShiftBee
 //
-//  Created by Ruben Mimoun on 29/07/2025.
+//  Created by Ruben Mimoun on 31/07/2025.
 //
 
-import Foundation
-import SBExtensions
 import SwiftUI
 
 @Observable
-class WeekDayCalendarObs {
+class CalendarTaskCRUDManager {
     
-    var calendarTasks: [CalendarTask] = []
+    var calendarTasks: [CalendarTask]
     
-    init(currentSelectedDate: Date, in tasks: [CalendarTask]) {
-        withAnimation {
-            self.calendarTasks = tasks.filter { $0.start.isSameDay(as: currentSelectedDate ) }.sorted(by: { $0.start < $1.start })
-        }
+    init(calendarTasks: [CalendarTask]) {
+        self.calendarTasks = calendarTasks
     }
     
     func add(_ event: CalendarTask) {
