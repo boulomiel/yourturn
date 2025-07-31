@@ -101,7 +101,7 @@ class SBCalendarSelectionObs {
     
     func fetchCount() async {
         do {
-            self.count = try await history.fetchCount(Shift.self)
+            self.count = try await history.fetchCount(SBShift.self)
         } catch {
             print(error)
         }

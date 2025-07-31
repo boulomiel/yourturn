@@ -34,7 +34,7 @@ struct SBCalendarCell: View {
     let size: CGFloat
     @Bindable var selectedObs: SBCalendarSelectionObs
     let onDateSelected: (Date) -> Void
-    @Query var shift: [Shift]
+    @Query var shift: [SBShift]
     
     init(cellDate: Date, startMonthDate: Date, size: CGFloat, selectedObs: SBCalendarSelectionObs, onDateSelected: @escaping (Date) -> Void) {
         self.cellDate = cellDate
@@ -43,10 +43,10 @@ struct SBCalendarCell: View {
         self.selectedObs = selectedObs
         self.onDateSelected = onDateSelected
         let shiftDate = cellDate
-        let predicate = #Predicate<Shift>{ shift in
+        let predicate = #Predicate<SBShift>{ shift in
             shift.date == shiftDate
         }
-        var descriptor = FetchDescriptor<Shift>(predicate: predicate)
+        var descriptor = FetchDescriptor<SBShift>(predicate: predicate)
         descriptor.fetchLimit = 1
         self._shift = .init(descriptor, animation: .bouncy)
     }

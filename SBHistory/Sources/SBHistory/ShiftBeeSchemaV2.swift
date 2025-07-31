@@ -15,7 +15,13 @@ public enum ShiftBeeSchemaV2: VersionedSchema {
             ShiftBeeSchemaV1.Shift.self,
             ShiftBeeSchemaV1.Team.self,
             // Updated Models
-            Item.self, Shift.self, Team.self, Event.self, Reminder.self, Person.self
+            Item.self,
+            Shift.self,
+            Team.self,
+            Event.self,
+            Reminder.self,
+            Person.self,
+            Activity.self
         ]
     }
     

@@ -8,7 +8,7 @@
 import SwiftData
 import Foundation
 
-public typealias Team = ShiftBeeSchemaV2.Team
+public typealias SBTeam = ShiftBeeSchemaV2.Team
 
 extension ShiftBeeSchemaV1 {
     @Model

@@ -8,7 +8,8 @@
 import Foundation
 import SwiftData
 
-public typealias Event = ShiftBeeSchemaV2.Event
+
+public typealias SBEvent = ShiftBeeSchemaV2.Event
 
 extension ShiftBeeSchemaV2 {
     @Model

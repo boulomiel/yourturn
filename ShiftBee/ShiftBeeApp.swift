@@ -40,8 +40,8 @@ extension ShiftBeeApp {
     static var previewContainer: ModelContainer {
         let schema = Schema([
             Item.self,
-            Shift.self,
-            Team.self
+            SBShift.self,
+            SBTeam.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
 

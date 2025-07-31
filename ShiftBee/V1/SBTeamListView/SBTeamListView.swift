@@ -17,7 +17,7 @@ struct SBTeamSelect {
 
 struct SBTeamListView: View {
     
-    @Query(sort: \Team.name) private var teams: [Team]
+    @Query(sort: \SBTeam.name) private var teams: [SBTeam]
     @Environment(\.dismiss) private var dismiss
     @State private var addTeamSheet: SheetTeam?
 
@@ -63,11 +63,11 @@ struct SBTeamListView: View {
     let container = ShiftBeeApp.previewContainer
     let moc = container.mainContext
     let teamNames = ["Paul", "Jhon", "Flock", "Pouf", "Chocolate"]
-    let team = Team(name: "Team 1", team: teamNames.map { .init(name: $0) })
+    let team = SBTeam(name: "Team 1", team: teamNames.map { .init(name: $0) })
     
     moc.insert(team)
     
-    let team2 = Team(name: "Team 2",  team: teamNames.map { .init(name: $0) })
+    let team2 = SBTeam(name: "Team 2",  team: teamNames.map { .init(name: $0) })
     
     moc.insert(team2)
     

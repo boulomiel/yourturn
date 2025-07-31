@@ -140,10 +140,10 @@ class SBHourShiftObs {
         let moc = modelContainer.mainContext
         let shiftDate = date
         do {
-            let predicate = #Predicate<Shift>{ shift in
+            let predicate = #Predicate<SBShift>{ shift in
                 shift.date == shiftDate
             }
-            var descriptor = FetchDescriptor<Shift>(predicate: predicate)
+            var descriptor = FetchDescriptor<SBShift>(predicate: predicate)
             descriptor.fetchLimit = 1
             
             let result = try moc.fetch(descriptor)
@@ -162,7 +162,7 @@ class SBHourShiftObs {
         let moc = modelContainer.mainContext
         guard let idenfitier = shiftIdentifier else { return }
         do {
-            try moc.delete(model: Shift.self, where: #Predicate { $0.id  == idenfitier })
+            try moc.delete(model: SBShift.self, where: #Predicate { $0.id  == idenfitier })
             try moc.save()
         } catch {
             print(error)
@@ -172,7 +172,7 @@ class SBHourShiftObs {
     func saveCurrentList() {
         let usernames = shiftStore.persons.map(\.name).filter { !$0.isEmpty }
         let moc = modelContainer.mainContext
-        let shift = Shift(date: date, startDate: startHour, endDate: endHour, persons: usernames.map { .init(name: $0) })
+        let shift = SBShift(date: date, startDate: startHour, endDate: endHour, persons: usernames.map { .init(name: $0) })
         do {
             moc.insert(shift)
             try moc.save()
@@ -197,7 +197,7 @@ class SBHourShiftObs {
 //        }
         let moc = modelContainer.mainContext
         do {
-            let fetchDescriptor = FetchDescriptor<Team>()
+            let fetchDescriptor = FetchDescriptor<SBTeam>()
             return try moc.fetchCount(fetchDescriptor)
         } catch {
             print(error)

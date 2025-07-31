@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public typealias Reminder = ShiftBeeSchemaV2.Reminder
+public typealias SBReminder = ShiftBeeSchemaV2.Reminder
 
 
 public extension ShiftBeeSchemaV2 {

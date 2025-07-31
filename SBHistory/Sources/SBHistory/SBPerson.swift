@@ -7,7 +7,7 @@
 
 import SwiftData
 
-public typealias Person = ShiftBeeSchemaV2.Person
+public typealias SBPerson = ShiftBeeSchemaV2.Person
 
 extension ShiftBeeSchemaV2 {
     @Model

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public typealias Station = ShiftBeeSchemaV2.Station
+public typealias SBStation = ShiftBeeSchemaV2.Station
 
 extension ShiftBeeSchemaV1 {
     @Model

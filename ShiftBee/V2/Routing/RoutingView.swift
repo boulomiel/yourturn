@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct RoutingView<Navigator, RootView>: View where Navigator: Router<NavigationSheet, NavigationPopover>, RootView: View {
+typealias BaseRouter = Router<NavigationSheet, NavigationPopover>
+
+struct RoutingView<Navigator, RootView>: View where Navigator: BaseRouter, RootView: View {
     
     @State private var navigator: Navigator
     @ViewBuilder var rootView: RootView
@@ -36,7 +38,7 @@ struct RoutingView<Navigator, RootView>: View where Navigator: Router<Navigation
 
 
 #Preview {
-    @Previewable @State var router: Router<NavigationSheet, NavigationPopover> = .init()
+    @Previewable @State var router: BaseRouter = .init()
     
     RoutingView(navigator: router, rootView: {
         List {
