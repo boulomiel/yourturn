@@ -37,23 +37,12 @@ class SBHourShiftObs {
     let getNameEvent: PassthroughSubject<FocusAppearField.FAFEvent, Never> = .init()
 
     // Constructor
-    let history: BackgroundSerialPersistenceActor
     let modelContainer: ModelContainer
     let date: Date
     
     init(modelContainer: ModelContainer, date: Date) {
         self.date = date
         self.shiftCase = .time
-        self.history = .init(container: modelContainer)
-//        let components = Calendar.current.dateComponents([.hour, .minute], from: .now)
-//        var advanced: TimeInterval = 0
-//        if let hour = components.hour {
-//            advanced += 60 * 60 * TimeInterval(hour)
-//        }
-//        if let minutes = components.minute {
-//            advanced += 60 * TimeInterval(minutes)
-//        }
-//        let start = date.advanced(by: advanced)
         self.shiftStore = .init(persons: [.init(name: "", time: nil)], stations: [])
         self.startHour = date
         self.endHour = date.advanced(by: 60 * 60 / 2)
@@ -137,64 +126,51 @@ class SBHourShiftObs {
     }
     
     func fetchDateList() {
-        let moc = modelContainer.mainContext
-        let shiftDate = date
-        do {
-            let predicate = #Predicate<SBShift>{ shift in
-                shift.date == shiftDate
-            }
-            var descriptor = FetchDescriptor<SBShift>(predicate: predicate)
-            descriptor.fetchLimit = 1
-            
-            let result = try moc.fetch(descriptor)
-            if let dateFound = result.first {
-                self.shiftStore.setPersons( dateFound.persons.map { SBPerson(name: $0.name) })
-                self.startHour = dateFound.startDate
-                self.endHour = dateFound.endDate
-                self.shiftIdentifier = dateFound.id
-            }
-        } catch {
-            print(error)
-        }
+//        let moc = modelContainer.mainContext
+//        let shiftDate = date
+//        do {
+//            let predicate = #Predicate<SBShift>{ shift in
+//                shift.date == shiftDate
+//            }
+//            var descriptor = FetchDescriptor<SBShift>(predicate: predicate)
+//            descriptor.fetchLimit = 1
+//            
+//            let result = try moc.fetch(descriptor)
+//            if let dateFound = result.first {
+//                self.shiftStore.setPersons( dateFound.persons.map { SBPerson(name: $0.name) })
+//                self.startHour = dateFound.startDate
+//                self.endHour = dateFound.endDate
+//                self.shiftIdentifier = dateFound.id
+//            }
+//        } catch {
+//            print(error)
+//        }
     }
     
     func removeCurrentShift() {
-        let moc = modelContainer.mainContext
-        guard let idenfitier = shiftIdentifier else { return }
-        do {
-            try moc.delete(model: SBShift.self, where: #Predicate { $0.id  == idenfitier })
-            try moc.save()
-        } catch {
-            print(error)
-        }
+//        let moc = modelContainer.mainContext
+//        guard let idenfitier = shiftIdentifier else { return }
+//        do {
+//            try moc.delete(model: SBShift.self, where: #Predicate { $0.id  == idenfitier })
+//            try moc.save()
+//        } catch {
+//            print(error)
+//        }
     }
     
     func saveCurrentList() {
         let usernames = shiftStore.persons.map(\.name).filter { !$0.isEmpty }
         let moc = modelContainer.mainContext
-        let shift = SBShift(date: date, startDate: startHour, endDate: endHour, persons: usernames.map { .init(name: $0) })
+        let shift = SBShift(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, date: date, startDate: startHour, endDate: endHour, persons: usernames.map { .init(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, name: $0) })
         do {
             moc.insert(shift)
             try moc.save()
         } catch {
             print(error)
         }
-//        Task {
-//            do {
-//                 await history.insert(data: shift)
-//            } catch {
-//                print(error)
-//            }
-//        }
     }
     
     func fetchTeamCount() -> Int {
-//        do {
-//            return try await history.fetchCount(Shift.self)
-//        } catch {
-//            print(error)
-//            return 0
-//        }
         let moc = modelContainer.mainContext
         do {
             let fetchDescriptor = FetchDescriptor<SBTeam>()

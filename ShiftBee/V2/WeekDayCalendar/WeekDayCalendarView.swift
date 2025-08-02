@@ -9,25 +9,19 @@ import SwiftUI
 import SwiftData
 import SBHistory
 
-
-
 struct WeekDayCalendarView: View {
     
     @Environment(FloattingButtonActionHandler.self) var floatingActionHandler
     @Environment(\.modelContext) private var moc
-    
+    @Environment(SBHistoryManager.self) var history: SBHistoryManager
     @Namespace private var indicator
     @Namespace private var rowSpace
-    @Query private var activities: [SBActivity]
+    let currentSelectedDate: Date
+    let calendarTasks: [CalendarTask]
     
-    init(currentSelectedDate: Date) {
-        let startDate = currentSelectedDate
-        let endDate = startDate.addingTimeInterval(60 * 60 * 24)
-        let predicate = #Predicate<SBActivity> { activity in
-            activity.startDate >= startDate && activity.endDate < endDate
-        }
-        let descriptor = FetchDescriptor(predicate: predicate, sortBy: [.init(\.startDate, order: .forward)])
-        self._activities = .init(descriptor, animation: .default)
+    init(currentSelectedDate: Date, calendarTasks: [CalendarTask]) {
+        self.calendarTasks = calendarTasks
+        self.currentSelectedDate = currentSelectedDate
     }
     
     var body: some View {
@@ -36,13 +30,11 @@ struct WeekDayCalendarView: View {
             .onAppear {
                 floatingActionHandler.onJumpToToDay = { print("on Jump To ToDay")}
                 floatingActionHandler.onShowCalendarList = { print("Show Caledar List") }
-            }
-        
+            }        
     }
     
     @ViewBuilder
     private func TaskContent() -> some View {
-        let calendarTasks = activities.map { activity -> CalendarTask in .init(id: activity.id, start: activity.startDate, end: activity.endDate, title: activity.title, eventDescription: activity.taskDescription) }
         if calendarTasks.isEmpty {
             ScrollView {
                 EmptyDailyView()
@@ -57,16 +49,16 @@ struct WeekDayCalendarView: View {
                     }
                 }
                 .onDelete(perform: { indexSet in
-                    let calendarTask = calendarTasks[indexSet.count-1]
-                    guard let toRemove = activities.first(where: { $0.id == calendarTask.id }) else {
-                        return
-                    }
-                    do {
-                        moc.delete(toRemove)
-                        try moc.save()
-                    } catch {
-                        ShiftBeeApp.logger.error("\(#function) - \(error)")
-                    }
+//                    let calendarTask = calendarTasks[indexSet.count-1]
+//                    guard let toRemove = activities.first(where: { $0.id == calendarTask.id }) else {
+//                        return
+//                    }
+//                    do {
+//                        moc.delete(toRemove)
+//                        try moc.save()
+//                    } catch {
+//                        ShiftBeeApp.logger.error("\(#function) - \(error)")
+//                    }
                 })
                 .listSectionSeparator(.hidden)
                 .listSectionSpacing(.compact)

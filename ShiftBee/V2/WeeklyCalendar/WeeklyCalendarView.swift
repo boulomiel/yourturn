@@ -13,6 +13,7 @@ import SBHistory
 struct WeeklyCalendarView: View {
     
     @Environment(\.modelContext) var moc
+    @Environment(SBHistoryManager.self) var history
     @Environment(FloattingButtonActionHandler.self) private var floatingActionHandler
     @Environment(CalendarTaskCRUDManager.self) private var calendarManager
 
@@ -22,7 +23,7 @@ struct WeeklyCalendarView: View {
         // Constants
     let weekCreationOffset: CGFloat = 15
     
-    init(obs: WeeklyCalendarViewObs = .init(startDate: .now)) {
+    init(obs: WeeklyCalendarViewObs) {
         self.obs = obs
     }
     
@@ -30,11 +31,19 @@ struct WeeklyCalendarView: View {
         VStack {
             HeaderView()
             WeekSliderView()
-            WeekDayCalendarView(currentSelectedDate: obs.headerDate)
+            WeekDayCalendarView(currentSelectedDate: obs.headerDate, calendarTasks: obs.dailyCalendarTasks)
         }
         .preferredColorScheme(.dark)
         .onAppear {
             floatingActionHandler.onShowCalendarList = { print("Show Caledar List") }
+        }
+        .onChange(of: obs.selectedDate, initial: true) { oldValue, newValue in
+            Task {
+                await obs.updateDailyCalendarTask()
+            }
+        }
+        .task {
+            await obs.observeDailyTasks()
         }
     }
     

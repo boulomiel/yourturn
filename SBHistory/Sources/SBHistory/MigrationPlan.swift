@@ -40,7 +40,7 @@ public enum MigrationPlan: SchemaMigrationPlan {
             
             let shifts = try context.fetch(FetchDescriptor<ShiftBeeSchemaV1.Shift>())
             for shift in shifts {
-                let shiftV2 = ShiftBeeSchemaV2.Shift(date: shift.date, startDate: shift.startDate, endDate: shift.endDate, persons: shift.persons.map {.init(name: $0) })
+                let shiftV2 = ShiftBeeSchemaV2.Shift(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, date: shift.date, startDate: shift.startDate, endDate: shift.endDate, persons: shift.persons.map { .init(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, name: $0) })
                 context.insert(shiftV2)
             }
             
@@ -52,7 +52,7 @@ public enum MigrationPlan: SchemaMigrationPlan {
             
             let teams = try context.fetch(FetchDescriptor<ShiftBeeSchemaV1.Team>())
             for team in teams {
-                let teamV2 = ShiftBeeSchemaV2.Team(name: team.name, team: team.team.map { .init(name: $0) })
+                let teamV2 = ShiftBeeSchemaV2.Team(name: team.name, team: team.team.map { .init(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, name: $0) })
                 context.insert(teamV2)
             }
             

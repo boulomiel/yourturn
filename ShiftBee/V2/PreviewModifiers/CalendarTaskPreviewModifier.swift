@@ -12,30 +12,35 @@ import SBHistory
 
 struct CalendarTaskPreviewModifier: PreviewModifier {
     
+    static let modelContainer = Preview().modelContainer
+    static let history = Preview().history
+
     static func makeSharedContext() async throws -> ModelContainer {
-        let modelContainer = Preview().modelContainer
-        try createMockData(in: modelContainer.mainContext)
+        try await createMockData(in: modelContainer.mainContext)
         return modelContainer
     }
     
     func body(content: Content, context: ModelContainer) -> some View {
         content
             .modelContainer(context)
+            .environment(Self.history)
+            .environment(FloattingButtonActionHandler())
+            .environment(CalendarTaskCRUDManager(calendarTasks: []))
     }
     
-    private static func createMockData(in context: ModelContext) throws {
+    private static func createMockData(in context: ModelContext) async throws {
         let calendarTask = CalendarTask.mockEventsForCurrentWeek()
-        let sbActivities = calendarTask.map { task -> SBActivity in
-                .init(title: task.title,
-                      taskDescription: task.eventDescription,
-                      startDate: task.start,
-                      endDate: task.end)
-        }
-        sbActivities.forEach { activity in
-            context.insert(activity)
+//        let sbActivities = calendarTask.map { task -> SBActivity in
+//                .init(title: task.title,
+//                      taskDescription: task.eventDescription,
+//                      startDate: task.start,
+//                      endDate: task.end)
+//        }
+        for activity in calendarTask {
+            try await history.insert(activity)
         }
         
-        try context.save()
+        try await history.save()
     }
     
 }

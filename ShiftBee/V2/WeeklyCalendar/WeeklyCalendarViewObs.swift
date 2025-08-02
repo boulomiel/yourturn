@@ -17,13 +17,18 @@ class WeeklyCalendarViewObs {
     var currentWeeks: [[WeekDay]]
     var selectedDate: Int?
     let startDate: Date
+    
+    var dailyCalendarTasks: [CalendarTask] = []
+
     private var canCreateWeek: Bool = false
+    private let history: SBHistoryManager
     
     var headerDate: Date {
         currentWeeks[selectedWeekIndex][selectedDate ?? 0].date
     }
     
-    init(startDate: Date) {
+    init(startDate: Date, history: SBHistoryManager) {
+        self.history = history
         self.startDate = startDate.startOfDay
         let currentWeek = startDate.fetchWeek()
         let previousWeek = currentWeek[0].date.createPreviousWeek()
@@ -68,4 +73,41 @@ class WeeklyCalendarViewObs {
     func onSelectDate(at index: Int) {
         selectedDate = index
     }
+    
+    func updateDailyCalendarTask() async {
+        let startDate = headerDate
+        let endDate = startDate.addingTimeInterval(60 * 60 * 24)
+        let predicate = #Predicate<SBActivity> { activity in
+            activity.startDate >= startDate && activity.endDate < endDate
+        }
+        do {
+            let calendarTasks = try await history.fetch(predicate: predicate, sortDescriptors: [.init(\.startDate, order: .forward)])
+            dailyCalendarTasks = calendarTasks
+        } catch {
+            ShiftBeeApp.logger.error("\(#function) - \(error)")
+            dailyCalendarTasks = []
+        }
+    }
+    
+    func observeDailyTasks() async {
+        for await new in NotificationCenter.default.messages(of: history, for: SBHistoryManager.LastInsertedMessage<CalendarTask>.self) {
+            let id = new.id
+            let date = Date(timeIntervalSince1970: new.lastItemTimestamp)
+            guard date.isSameDay(as: headerDate) else {
+                continue
+            }
+            do {
+                guard let newsTask = try await history.fetch(predicate: #Predicate<SBActivity> { $0.domainId == id }, sortDescriptors: [], fetchLimit: 1).first else{
+                    continue
+                }
+                var newCalendarTasks = dailyCalendarTasks
+                newCalendarTasks.append(newsTask)
+                newCalendarTasks.sort { $0.start < $1.start }
+                dailyCalendarTasks = newCalendarTasks
+            } catch {
+                ShiftBeeApp.logger.error("\(#function) - \(error)")
+            }
+        }
+    }
 }
+

@@ -69,7 +69,7 @@ struct SBHourShift: View {
         .preferredColorScheme(.dark)
         .onAppear {
             let teamNames = ["Paul", "Jhon", "Flock", "Pouf", "Chocolate"]
-            let team = SBTeam(name: "Team 1", team: teamNames.map { .init(name: $0) })
+            let team = SBTeam(name: "Team 1", team: teamNames.map { .init(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, name: $0) })
             
             moc.insert(team)
             

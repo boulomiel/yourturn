@@ -24,7 +24,7 @@ class SBCalendarSelectionObs {
         self.history = history
     }
     
-    enum SBSelectionError: SBErrorPopupProtocol {
+    enum SBSelectionError: @MainActor SBErrorPopupProtocol {
         case secondTimeMustBeBigger
         
         var localizedDescription: String {
@@ -35,7 +35,7 @@ class SBCalendarSelectionObs {
         }
     }
     
-    enum SBSelectionInfo: SBInfoPopupProtocol {
+    enum SBSelectionInfo: @MainActor SBInfoPopupProtocol {
         case info
 
         var localizedDescription: String {

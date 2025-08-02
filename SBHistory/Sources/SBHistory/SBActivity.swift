@@ -14,14 +14,24 @@ extension ShiftBeeSchemaV2 {
     @Model
     public final class Activity {
         @Attribute(.unique)
-        public var id: UUID
+        public var domainId: UUID
+        public var timestamp: TimeInterval
         public var title: String
         public var taskDescription: String?
         public var startDate: Date
         public var endDate: Date
 
-        public init(title: String, taskDescription: String?, startDate: Date, endDate: Date) {
-            self.id = .init()
+//        public init(title: String, taskDescription: String?, startDate: Date, endDate: Date) {
+//            self.domainId = .init()
+//            self.title = title
+//            self.taskDescription = taskDescription
+//            self.startDate = startDate
+//            self.endDate = endDate
+//        }
+        
+        public init(domainId: UUID, timestamp: TimeInterval, title: String, taskDescription: String?, startDate: Date, endDate: Date) {
+            self.domainId = domainId
+            self.timestamp = timestamp
             self.title = title
             self.taskDescription = taskDescription
             self.startDate = startDate

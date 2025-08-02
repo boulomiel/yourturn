@@ -21,23 +21,26 @@ struct ShiftBeeApp: App {
         }
     }()
     
-    var history: BackgroundSerialPersistenceActor {
-        return BackgroundSerialPersistenceActor(container: sharedModelContainer)
+    var history: SBHistoryManager {
+        return .init(modelContainer: sharedModelContainer)
     }
 
     var body: some Scene {
         WindowGroup {
-            SBCalendarPicker(selectionObs: .init(history: history))
-                .preferredColorScheme(.dark)
+//            SBCalendarPicker(selectionObs: .init(history: history))
+//                .preferredColorScheme(.dark)
+            ActivityView()
         }
         .modelContainer(sharedModelContainer)
-        .environmentObject(history)
+        .environment(history)
+        .environment(ShiftBeeLocationManager())
     }
 }
 
 struct Preview {
     
     let modelContainer: ModelContainer
+    let history: SBHistoryManager
     
     init() {
         let schema = Schema(ShiftBeeSchemaV2.models)
@@ -45,11 +48,13 @@ struct Preview {
 
         do {
             self.modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            self.history = .init(modelContainer: modelContainer)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }
 }
+
 
 extension ShiftBeeApp {
     
