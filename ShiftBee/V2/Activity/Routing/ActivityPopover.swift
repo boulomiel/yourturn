@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 03/08/2025.
 //
 
+import SwiftUI
 
 enum ActivityPopover: @MainActor NavigationItem {
     case none

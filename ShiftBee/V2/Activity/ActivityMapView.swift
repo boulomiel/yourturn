@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 03/08/2025.
 //
 
+import MapKit
 import SwiftUI
 
 struct ActivityMapView: View {
