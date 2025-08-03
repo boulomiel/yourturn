@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias MainRouter = Router<MainNavigationRoute, MainNavigationSheet, MainNavigationPopover>
+typealias MainRouter = Router<CalendarNavigationRoute, CalendarNavigationSheet, CalendarNavigationPopover>
 
-struct RoutingView<Navigator, RootView>: View where Navigator: Observable & RoutingProtocol, RootView: View {
+struct RoutingView<Navigator, RootView>: View where Navigator: Observable & RoutingProtocol & AnyObject, RootView: View {
     
     @State private var navigator: Navigator
     @ViewBuilder var rootView: RootView
@@ -33,6 +33,7 @@ struct RoutingView<Navigator, RootView>: View where Navigator: Observable & Rout
         .popover(item: $navigator.popoverItem) { item in
             item.view
         }
+        .environment(navigator)
     }
 }
 

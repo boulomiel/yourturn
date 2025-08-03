@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum MainNavigationRoute: @MainActor NavigationItem {
+enum CalendarNavigationRoute: @MainActor NavigationItem {
     
     case testPush
     

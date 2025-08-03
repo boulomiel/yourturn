@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum MainNavigationPopover: @MainActor NavigationItem {
+enum CalendarNavigationPopover: @MainActor NavigationItem {
     
     case testPopover
     
