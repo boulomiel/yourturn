@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias BaseRouter = Router<NavigationSheet, NavigationPopover>
+typealias MainRouter = Router<MainNavigationRoute, MainNavigationSheet, MainNavigationPopover>
 
-struct RoutingView<Navigator, RootView>: View where Navigator: BaseRouter, RootView: View {
+struct RoutingView<Navigator, RootView>: View where Navigator: Observable & RoutingProtocol, RootView: View {
     
     @State private var navigator: Navigator
     @ViewBuilder var rootView: RootView
@@ -23,7 +23,7 @@ struct RoutingView<Navigator, RootView>: View where Navigator: BaseRouter, RootV
     var body: some View {
         NavigationStack(path: $navigator.path,root: {
             rootView
-                .navigationDestination(for: NavigationRoute.self) { item in
+                .navigationDestination(for: Navigator.Route.self) { item in
                     item.view
                 }
         })
@@ -38,7 +38,7 @@ struct RoutingView<Navigator, RootView>: View where Navigator: BaseRouter, RootV
 
 
 #Preview {
-    @Previewable @State var router: BaseRouter = .init()
+    @Previewable @State var router: MainRouter = .init()
     
     RoutingView(navigator: router, rootView: {
         List {
@@ -51,7 +51,7 @@ struct RoutingView<Navigator, RootView>: View where Navigator: BaseRouter, RootV
             }
             
             Button("Push") {
-                router.push(NavigationRoute.testPush)
+                router.push(.testPush)
             }
         }
         .navigationTitle("Routing view")
