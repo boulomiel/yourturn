@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NavigationRoute: Identifiable, Hashable {
+enum MainNavigationRoute: @MainActor NavigationItem {
     
     case testPush
     
@@ -19,5 +19,9 @@ enum NavigationRoute: Identifiable, Hashable {
     @ViewBuilder
     var view: some View {
         Text("Push")
+    }
+    
+    var onDismiss: (() -> Void)? {
+        nil
     }
 }

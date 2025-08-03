@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NavigationSheet: Identifiable {
+enum MainNavigationSheet: @MainActor NavigationItem {
     
     case testSheet
     case createNewTask

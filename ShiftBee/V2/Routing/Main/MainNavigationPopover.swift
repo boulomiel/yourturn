@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum NavigationPopover: Identifiable {
+enum MainNavigationPopover: @MainActor NavigationItem {
     
     case testPopover
     
@@ -22,5 +22,8 @@ enum NavigationPopover: Identifiable {
             Text("TestPopover")
         }
     }
-
+    
+    var onDismiss: (() -> Void)? {
+        nil
+    }
 }
