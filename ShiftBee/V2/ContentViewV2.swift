@@ -10,21 +10,26 @@ import SBHistory
 
 struct ContentViewV2: View {
     
+    @Environment(SBHistoryManager.self) var history
     @Environment(\.modelContext) var context
-    @State private var router: BaseRouter = .init()
+    @State private var router: MainRouter = .init()
     let floatingActionHandler: FloattingButtonActionHandler = .init()
     
     var body: some View {
         RoutingView(navigator: router) {
-            WeeklyCalendarView()
+            WeeklyCalendarView(obs: .init(startDate: .now, history: history))
                 .safeAreaInset(edge: .bottom, alignment: .trailing) {
                     FloatingButton {
                         FloatingButtonItem(
                             label: "Add Event",
                             systemImage: "calendar.badge.plus",
                             action: {
-                                context.insert(SBActivity(title: "Test", taskDescription: "Because now time has come to testing proogress", startDate: .now, endDate: .now.addingTimeInterval(3600 * 3)))
-                                try? context.save()
+                                Task {
+                                    let calendarTask = CalendarTask(id: .init(), timestamp: Date.now.timeIntervalSince1970, start: .now, end: .now.addingTimeInterval(3600 * 3), title: "Test", eventDescription: "Because now time has come to testing proogress")
+                                    try await history.insert(calendarTask)
+                                }
+//                                context.insert(SBActivity(title: "Test", taskDescription: "Because now time has come to testing proogress", startDate: .now, endDate: .now.addingTimeInterval(3600 * 3)))
+//                                try? context.save()
                                 // Code to add a new event
                             }
                         )
@@ -50,9 +55,9 @@ struct ContentViewV2: View {
                     .padding(.horizontal, 8)
                 }
                 .environment(floatingActionHandler)
-                // Replace by fetched data from SwifData
                 .environment(CalendarTaskCRUDManager(calendarTasks: []))
         }
+
     }
 }
 

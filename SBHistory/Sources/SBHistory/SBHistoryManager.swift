@@ -111,7 +111,7 @@ public actor SBHistoryManager: Observable {
     /// - Parameter model: domain data to be sent
     private func postLastInserted<Domain: SBDomainProtocol>(model : Domain) where Domain.ID == UUID {
         let lastMessage = LastInsertedMessage(type: Domain.self, id: model.id, lastItemTimestamp: model.timestamp)
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), #available(macOS 26.0, *) {
             NotificationCenter.default.post(lastMessage, subject: self)
         }
     }
