@@ -69,7 +69,7 @@ extension ShiftBeeApp {
         }
     }
     
-    static let logger = Logger(subsystem: "com.shiftbee.SwiftData", category: "App")
+    nonisolated static let logger = Logger(subsystem: "com.shiftbee.SwiftData", category: "App")
 
     static func setupModelContainer(for versionedSchema: VersionedSchema.Type = ShiftBeeSchemaV2.self, rollback: Bool = false) throws -> ModelContainer {
         do {
@@ -81,8 +81,11 @@ extension ShiftBeeApp {
             
             // config
             var config: ModelConfiguration
-            
-            config = ModelConfiguration(schema: schema)
+            let baseURL = URL.documentsDirectory
+            let versionURL = baseURL.appending(path: String(describing: versionedSchema))
+            let storeURL = versionURL.appending(path: "sbdatabase.sqlite")
+
+            config = ModelConfiguration(schema: schema, url: storeURL)
 
             logger.info("setup - config: \(String(describing: config))")
             
