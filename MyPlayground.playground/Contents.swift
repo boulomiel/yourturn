@@ -73,3 +73,20 @@ public struct DateStore: DateStoreProtocol {
 let dataStore = DateStore()
 _ = dataStore.getWeek(from: .now)
 
+struct Message {
+    
+}
+
+class Chat {
+     nonisolated(unsafe) static let shared: Chat = .init()
+    
+    var onMessage: (Message) -> Void = { _ in }
+}
+
+AsyncStream<Message> { continuation in
+    Chat.shared.onMessage = {
+        continuation.yield($0)
+    }
+}
+
+

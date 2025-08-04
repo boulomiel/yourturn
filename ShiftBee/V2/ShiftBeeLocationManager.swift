@@ -30,7 +30,6 @@ class ShiftBeeLocationManager: NSObject {
     
     /// If the location permission has been given locationManager(didChangeAuthorization:) will request the current location
     func requestLocation() {
-        print(#function)
         didRequestLocation = true
         locationManager.requestWhenInUseAuthorization()
         if permission == .authorized {

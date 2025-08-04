@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8732112D2E3B82B20065A6BE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8732112C2E3B82B20065A6BE /* MapKit.framework */; };
 		873F90BD2E38C60F003954F0 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 873F90BC2E38C60F003954F0 /* SBExtensions */; };
 		87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065A2E362C7F0072A6D3 /* SBHistory */; };
 		87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065D2E363AAA0072A6D3 /* SBExtensions */; };
@@ -34,6 +35,7 @@
 		870BD2C02DC78DD300D9955A /* ShiftBeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftBeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftBeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		87320E962E39EAB20065A6BE /* ShiftBee.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = ShiftBee.xctestplan; path = ShiftBeeTests/ShiftBee.xctestplan; sourceTree = "<group>"; };
+		8732112C2E3B82B20065A6BE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -73,6 +75,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */,
+				8732112D2E3B82B20065A6BE /* MapKit.framework in Frameworks */,
 				87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,6 +123,7 @@
 		87DB06592E362C7F0072A6D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8732112C2E3B82B20065A6BE /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -446,6 +450,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order to assist you the best, we need to fetch your current location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -489,6 +495,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order to assist you the best, we need to fetch your current location.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -96,7 +96,7 @@ struct SBAddTeamView: View {
         Button {
             let names = obs.cellObs.map(\.name).filter { !$0.isEmpty }
             let teamData = SBStorage.archiveStringArray(object: names)
-            moc.insert(SBTeam(name: teamName, team: names.map { .init(name: $0 )}))
+            moc.insert(SBTeam(name: teamName, team: names.map { .init(domainId: .init(), timestamp: Date.now.timeIntervalSince1970, name: $0)}))
             do {
                 try moc.save()
                 dimiss.callAsFunction()
