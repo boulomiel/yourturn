@@ -20,30 +20,18 @@ struct ModelGenerator<Generated: Generable & Sendable> {
     }
     
     @concurrent
-    func response(to prompt: String, _ result: sending @escaping (Generated.PartiallyGenerated) async -> Void) async {
-        do {
-            let response = session.streamResponse(to: prompt, generating: Generated.self, includeSchemaInPrompt: true, options: generationOptions)
-            for try await answer in response {
-                await result(answer)
-            }
-        } catch {
-            ShiftBeeApp.logger.error("\(#function) - \(error)")
+    func response(to prompt: String, _ result: sending @escaping (Generated.PartiallyGenerated) async -> Void) async throws {
+        let response = session.streamResponse(to: prompt, generating: Generated.self, includeSchemaInPrompt: true, options: generationOptions)
+        for try await answer in response {
+            await result(answer)
         }
     }
     
     @concurrent
-    func response(to prompt: String) async -> [Generated] {
-        do {
- //           let response = session.response
-//            for try await answer in response {
-//                await result(answer)
-//            }
-        } catch {
-            ShiftBeeApp.logger.error("\(#function) - \(error)")
-        }
-        return []
+    func response(to prompt: String) async throws -> Generated {
+        let response = try await session.respond(to: prompt, generating: Generated.self, includeSchemaInPrompt: true, options: generationOptions)
+        return response.content
     }
-    
 }
 
 
@@ -61,13 +49,12 @@ struct ModelGenerator<Generated: Generable & Sendable> {
         maximumResponseTokens: 800
     )
     
-    let cityModelGenerator: ModelGenerator<[NearbyCity]> = .init(generationOptions: generationOptions, instructions: { cityInstructions })
-    
-    Task {
-        await cityModelGenerator.response(to: "Near Paris", { generated  in
-            _ = generated
-        })
-    }
+//    let cityModelGenerator: ModelGenerator<[NearbyCity]> = .init(generationOptions: generationOptions, instructions: { cityInstructions })
+//    
+//    Task {
+//        try await cityModelGenerator.response(to: "Near Paris", { generated  in
+//        })
+//    }
     
     let addressInstructions =
         """
@@ -79,10 +66,15 @@ struct ModelGenerator<Generated: Generable & Sendable> {
     
     let addressModelGenerator: ModelGenerator<[NearbyAddress]> = .init(generationOptions: generationOptions, instructions: { addressInstructions })
     
+//    Task {
+//        try await addressModelGenerator.response(to: "Near coordinates such as latitude: \(48.8606), longitude: \(2.2976)", { generated  in
+//            _ = generated
+//            generated.compactMap(\.city)
+//        })
+//    }
+    
     Task {
-        await addressModelGenerator.response(to: "Near coordinates such as latitude: \(48.8606), longitude: \(2.2976)", { generated  in
-            _ = generated
-        })
+        try await addressModelGenerator.response(to: "Near coordinates such as latitude: \(48.8606), longitude: \(2.2976)")
     }
     
 }

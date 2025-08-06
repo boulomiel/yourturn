@@ -24,11 +24,15 @@ struct ActivityMapView: View {
     @State private var addressField: String = ""
     @State var lookupPoints: [NearbyAddress] = []
 
-    @State private var obs: ActivityMapsObs = .init()
+    private let obs: ActivityMapsObs = .init()
+    @State private var city: NearbyCity?
+    @State private var cityField: String = ""
+    @State private var cities: [NearbyCity] = []
+
     
     var body: some View {
         ScrollView {
-            mapView
+            ActivityLocationMapView()
                 .frame(height: 500)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 30 ,bottomTrailingRadius: 30, topTrailingRadius: 0))
                 .matchedTransitionSource(id: "map", in: mapNameSpace)
@@ -37,8 +41,21 @@ struct ActivityMapView: View {
                 .font(.system(size: 25).bold().weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
-                
+            Section {
+                ForEach(cities, id: \.self) { city in
+                    Text(city.title)
+                        .font(.system(size: 16).bold().weight(.medium))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } header: {
+                VStack {
+                    Text("City")
+                        .font(.system(size: 20).bold().weight(.medium))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    TextField("Input here", text:  $cityField)
+                        .textFieldStyle(.roundedBorder)
+                }
             }
             
         }
@@ -46,25 +63,42 @@ struct ActivityMapView: View {
             
             
         })
-        .ignoresSafeArea(.all, edges: .top)
+        .onChange(of: cityField, { oldValue, newValue in
+            if oldValue.count < newValue.count {
+                self.cities = []
+            }
+            guard !newValue.isEmpty,
+                case let .found(location) = userLocation else { return }
+                self.obs.getCities(basedOn: location.coordinate.latitude,
+                                                     and: location.coordinate.longitude,
+                                                     and: newValue)
+            
+        })
+        .ignoresSafeArea(.keyboard, edges: .top)
         .simultaneousGesture(TapGesture(count: 2).onEnded({ _ in
             guard let userLocation = locationManager.userLocation else { return }
-            router.presentSheet(.mapZoom(userLocation: userLocation,transitionId: "map", mapSpace: mapNameSpace))
+        //    router.presentSheet(.mapZoom(userLocation: userLocation,transitionId: "map", mapSpace: mapNameSpace))
         }))
         .task {
-            for await points in obs.asyncLookUpPoints {
-                points.forEach {
-                    if !lookupPoints.contains($0) {
-                        self.lookupPoints.append($0)
-                    }
-                }
-                print(lookupPoints)
+            for await city in obs.asyncCities {
+                self.cities.append(.init(title: city, coordinates: .init(latitude: 0.0, longitude: 0.0)))
             }
         }
     }
+}
+
+struct ActivityLocationMapView: View {
+    
+    @Environment(ShiftBeeLocationManager.self) private var locationManager
+    @Namespace private var mapNameSpace
+    @State private var userLocation: ActivityMapView.UserLocationState = .notFound
+    
+    var body: some View {
+        mapView
+    }
     
     private var mapView: some View {
-        Map(bounds: .init(minimumDistance: 200, maximumDistance: 500), scope: mapNameSpace) {
+        Map(bounds: .init(minimumDistance: 500, maximumDistance: 1000), scope: mapNameSpace) {
             mapBuilder
         }
         .onAppear {
@@ -74,24 +108,18 @@ struct ActivityMapView: View {
             switch newValue {
             case .some(let location):
                 self.userLocation = .found(location: location)
-                self.obs.getLookupPoints(basedOn: location.coordinate.latitude, and: location.coordinate.longitude)
             case .none:
                 self.userLocation = .notFound
             }
         }
     }
-    
+
     @MapContentBuilder
     private var mapBuilder: some MapContent {
         switch userLocation {
         case .found(let location):
             Marker(coordinate: location.coordinate) {
                 Image(systemName: "person")
-            }
-            ForEach(lookupPoints, id:\.title) { point in
-                Marker(coordinate: .init(latitude: point.coordinates.latitude, longitude: point.coordinates.longitude)) {
-                    Label(point.title, systemImage: "house")
-                }
             }
         case .notFound:
             Annotation(item: .forCurrentLocation()) {
@@ -103,53 +131,9 @@ struct ActivityMapView: View {
     }
 }
 
-@Observable
-class ActivityMapsObs {
-    
-    var asyncLookUpPoints: AsyncStream<[NearbyAddress]>
-    var continuationLookUpPoints: AsyncStream<[NearbyAddress]>.Continuation
-    
-    init() {
-        (asyncLookUpPoints, continuationLookUpPoints) = AsyncStream.makeStream(of: [NearbyAddress].self)
-    }
-    
-    func getLookupPoints(basedOn currentLatitude: Double, and currentLongitude: Double) {
-        let addressInstructions =
-            """
-            The input will be coordinates.
-            Create a list of 5 answers.
-            A list must return element such as:
-                \(NearbyAddress.example)
-            """
-        
-        let addressModelGenerator: ModelGenerator<[NearbyAddress]> = .init(generationOptions: .init(), instructions: { addressInstructions })
-        Task {
-            await addressModelGenerator.response(
-                to: "Near coordinates such as latitude: \(currentLatitude), longitude: \(currentLongitude)",
-                { [weak self] generated  in
-                    let lookUpPoints = generated
-                        .compactMap {
-                            NearbyAddress(
-                                title: $0.title ?? "",
-                                street: $0.street ?? "",
-                                streetNumber: $0.streetNumber ?? "",
-                                city: $0.city ?? "",
-                                coordinates: .init(
-                                    latitude: $0.coordinates?.latitude ?? 0,
-                                    longitude: $0.coordinates?.longitude ?? 0
-                                )
-                            )
-                        }
-                    
-                    await self?.continuationLookUpPoints.yield(lookUpPoints)
-                })
-        }
-    }
-}
-
-
-#Preview(traits: .modifier(ActivityPreviewModifier())) {
-    ActivityMapView()
-        .preferredColorScheme(.dark)
-
-}
+//
+//#Preview(traits: .modifier(ActivityPreviewModifier())) {
+//    ActivityMapView()
+//        .preferredColorScheme(.dark)
+//
+//}

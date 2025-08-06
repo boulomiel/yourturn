@@ -9,7 +9,7 @@
 import FoundationModels
 
 @Generable
-struct NearbyCity {
+struct NearbyCity: Hashable {
     
     @Guide(description: "The name of the city.")
     let title: String
