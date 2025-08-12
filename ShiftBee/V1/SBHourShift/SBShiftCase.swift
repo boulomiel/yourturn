@@ -6,7 +6,7 @@
 //
 
 
-enum SBShiftCase: SBSegmentValueCase {
+enum SBShiftCase: @MainActor SBSegmentValueCase {
     
     case time
     case persons

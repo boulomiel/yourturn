@@ -6,7 +6,7 @@
 //
 
 
-enum SBHourShiftInfo: SBInfoPopupProtocol {
+enum SBHourShiftInfo: @MainActor SBInfoPopupProtocol {
 
     case currentTime(time: String)
     case timePerPerson(time: String)

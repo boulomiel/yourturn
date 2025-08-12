@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 04/05/2025.
 //
 
+import SBExtensions
 import SBHistory
 import SwiftData
 import Foundation

@@ -10,14 +10,11 @@ import SwiftUI
 import Foundation
 import SwiftData
 
-public enum MigrationPlan: SchemaMigrationPlan {
-    public static var schemas: [any VersionedSchema.Type] {
-        [ShiftBeeSchemaV1.self, ShiftBeeSchemaV2.self]
-    }
+public enum MigrationPlan: SchemaMigrationPlan, Sendable {
     
-    public static var stages: [MigrationStage] {
-        [migrateV1toV2]
-    }
+    public static let schemas: [any VersionedSchema.Type] = [ShiftBeeSchemaV1.self, ShiftBeeSchemaV2.self]
+    public static let stages: [MigrationStage] = [migrateV1toV2]
+    
     
     // MARK: Migration Stages
     
@@ -60,3 +57,5 @@ public enum MigrationPlan: SchemaMigrationPlan {
         }
     )
 }
+
+extension MigrationStage: @unchecked Sendable { }

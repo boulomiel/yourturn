@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		8732112D2E3B82B20065A6BE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8732112C2E3B82B20065A6BE /* MapKit.framework */; };
 		873F90BD2E38C60F003954F0 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 873F90BC2E38C60F003954F0 /* SBExtensions */; };
+		87572B4F2E433E1D005AEE26 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87572B4E2E433E1D005AEE26 /* WidgetKit.framework */; };
+		87572B512E433E1D005AEE26 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87572B502E433E1D005AEE26 /* SwiftUI.framework */; };
+		87572B622E433E1E005AEE26 /* ShiftBeeAlarmWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87572B4D2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		87DB065B2E362C7F0072A6D3 /* SBHistory in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065A2E362C7F0072A6D3 /* SBHistory */; };
 		87DB065E2E363AAA0072A6D3 /* SBExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 87DB065D2E363AAA0072A6D3 /* SBExtensions */; };
 /* End PBXBuildFile section */
@@ -28,7 +31,28 @@
 			remoteGlobalIDString = 870BD2B02DC78DD100D9955A;
 			remoteInfo = YourTurn;
 		};
+		87572B602E433E1E005AEE26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 870BD2A92DC78DD100D9955A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 87572B4C2E433E1D005AEE26;
+			remoteInfo = ShiftBeeAlarmWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		87572B672E433E1E005AEE26 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				87572B622E433E1E005AEE26 /* ShiftBeeAlarmWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		870BD2B12DC78DD100D9955A /* ShiftBee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftBee.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,9 +60,45 @@
 		870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftBeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		87320E962E39EAB20065A6BE /* ShiftBee.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = ShiftBee.xctestplan; path = ShiftBeeTests/ShiftBee.xctestplan; sourceTree = "<group>"; };
 		8732112C2E3B82B20065A6BE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		87572B4D2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShiftBeeAlarmWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		87572B4E2E433E1D005AEE26 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		87572B502E433E1D005AEE26 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		87572B662E433E1E005AEE26 /* Exceptions for "ShiftBeeAlarmWidget" folder in "ShiftBeeAlarmWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 87572B4C2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension */;
+		};
+		879E14AE2E438F1B00448924 /* Exceptions for "ShiftBeeAlarmWidget" folder in "ShiftBee" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Activity/SBAlarmActivity.swift,
+				Activity/SBAlarmActivityManager.swift,
+				WidgetUI/SBAlarmActivityConfiguration.swift,
+				WidgetUI/SBAlarmActivityWidgetBundle.swift,
+			);
+			target = 870BD2B02DC78DD100D9955A /* ShiftBee */;
+		};
+		879E14B02E438F2300448924 /* Exceptions for "ShiftBee" folder in "ShiftBeeAlarmWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				V2/Features/Alarms/SBAlarmBuilder.swift,
+				V2/Features/Alarms/SBAlarmManager.swift,
+				V2/Features/Alarms/SBAlarmMetadata.swift,
+			);
+			target = 87572B4C2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension */;
+		};
+		879E14B82E4395BD00448924 /* Exceptions for "ShiftBeeUITests" folder in "ShiftBeeUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 870BD2C92DC78DD300D9955A /* ShiftBeeUITests */;
+		};
 		87DB04022E3601DB0072A6D3 /* Exceptions for "ShiftBee" folder in "ShiftBee" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -53,6 +113,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				87DB04022E3601DB0072A6D3 /* Exceptions for "ShiftBee" folder in "ShiftBee" target */,
+				879E14B02E438F2300448924 /* Exceptions for "ShiftBee" folder in "ShiftBeeAlarmWidgetExtension" target */,
 			);
 			path = ShiftBee;
 			sourceTree = "<group>";
@@ -64,7 +125,19 @@
 		};
 		870BD2CD2DC78DD300D9955A /* ShiftBeeUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				879E14B82E4395BD00448924 /* Exceptions for "ShiftBeeUITests" folder in "ShiftBeeUITests" target */,
+			);
 			path = ShiftBeeUITests;
+			sourceTree = "<group>";
+		};
+		87572B522E433E1D005AEE26 /* ShiftBeeAlarmWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				879E14AE2E438F1B00448924 /* Exceptions for "ShiftBeeAlarmWidget" folder in "ShiftBee" target */,
+				87572B662E433E1E005AEE26 /* Exceptions for "ShiftBeeAlarmWidget" folder in "ShiftBeeAlarmWidgetExtension" target */,
+			);
+			path = ShiftBeeAlarmWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -95,6 +168,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		87572B4A2E433E1D005AEE26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87572B512E433E1D005AEE26 /* SwiftUI.framework in Frameworks */,
+				87572B4F2E433E1D005AEE26 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -105,6 +187,7 @@
 				870BD2B32DC78DD100D9955A /* ShiftBee */,
 				870BD2C32DC78DD300D9955A /* ShiftBeeTests */,
 				870BD2CD2DC78DD300D9955A /* ShiftBeeUITests */,
+				87572B522E433E1D005AEE26 /* ShiftBeeAlarmWidget */,
 				87DB06592E362C7F0072A6D3 /* Frameworks */,
 				870BD2B22DC78DD100D9955A /* Products */,
 			);
@@ -116,6 +199,7 @@
 				870BD2B12DC78DD100D9955A /* ShiftBee.app */,
 				870BD2C02DC78DD300D9955A /* ShiftBeeTests.xctest */,
 				870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */,
+				87572B4D2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,6 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				8732112C2E3B82B20065A6BE /* MapKit.framework */,
+				87572B4E2E433E1D005AEE26 /* WidgetKit.framework */,
+				87572B502E433E1D005AEE26 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -138,10 +224,12 @@
 				870BD2AD2DC78DD100D9955A /* Sources */,
 				870BD2AE2DC78DD100D9955A /* Frameworks */,
 				870BD2AF2DC78DD100D9955A /* Resources */,
+				87572B672E433E1E005AEE26 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				87572B612E433E1E005AEE26 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				870BD2B32DC78DD100D9955A /* ShiftBee */,
@@ -202,6 +290,28 @@
 			productReference = 870BD2CA2DC78DD300D9955A /* ShiftBeeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		87572B4C2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87572B632E433E1E005AEE26 /* Build configuration list for PBXNativeTarget "ShiftBeeAlarmWidgetExtension" */;
+			buildPhases = (
+				87572B492E433E1D005AEE26 /* Sources */,
+				87572B4A2E433E1D005AEE26 /* Frameworks */,
+				87572B4B2E433E1D005AEE26 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				87572B522E433E1D005AEE26 /* ShiftBeeAlarmWidget */,
+			);
+			name = ShiftBeeAlarmWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ShiftBeeAlarmWidgetExtension;
+			productReference = 87572B4D2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -209,7 +319,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					870BD2B02DC78DD100D9955A = {
@@ -222,6 +332,9 @@
 					870BD2C92DC78DD300D9955A = {
 						CreatedOnToolsVersion = 16.3;
 						TestTargetID = 870BD2B02DC78DD100D9955A;
+					};
+					87572B4C2E433E1D005AEE26 = {
+						CreatedOnToolsVersion = 26.0;
 					};
 				};
 			};
@@ -246,6 +359,7 @@
 				870BD2B02DC78DD100D9955A /* ShiftBee */,
 				870BD2BF2DC78DD300D9955A /* ShiftBeeTests */,
 				870BD2C92DC78DD300D9955A /* ShiftBeeUITests */,
+				87572B4C2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -266,6 +380,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		870BD2C82DC78DD300D9955A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87572B4B2E433E1D005AEE26 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -296,6 +417,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		87572B492E433E1D005AEE26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -309,6 +437,11 @@
 			target = 870BD2B02DC78DD100D9955A /* ShiftBee */;
 			targetProxy = 870BD2CB2DC78DD300D9955A /* PBXContainerItemProxy */;
 		};
+		87572B612E433E1E005AEE26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 87572B4C2E433E1D005AEE26 /* ShiftBeeAlarmWidgetExtension */;
+			targetProxy = 87572B602E433E1E005AEE26 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -317,6 +450,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_NUMBER = 2;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -373,7 +507,26 @@
 				PRODUCT_NAME = "$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_CONCISE_MAGIC_FILE = YES;
+				SWIFT_UPCOMING_FEATURE_DEPRECATE_APPLICATION_MAIN = YES;
+				SWIFT_UPCOMING_FEATURE_DISABLE_OUTWARD_ACTOR_ISOLATION = YES;
+				SWIFT_UPCOMING_FEATURE_DYNAMIC_ACTOR_ISOLATION = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_FORWARD_TRAILING_CLOSURES = YES;
+				SWIFT_UPCOMING_FEATURE_GLOBAL_ACTOR_ISOLATED_TYPES_USABILITY = YES;
+				SWIFT_UPCOMING_FEATURE_GLOBAL_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_IMPLICIT_OPEN_EXISTENTIALS = YES;
+				SWIFT_UPCOMING_FEATURE_IMPORT_OBJC_FORWARD_DECLS = YES;
+				SWIFT_UPCOMING_FEATURE_INFER_ISOLATED_CONFORMANCES = YES;
+				SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = NO;
+				SWIFT_UPCOMING_FEATURE_ISOLATED_DEFAULT_VALUES = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_UPCOMING_FEATURE_NONFROZEN_ENUM_EXHAUSTIVITY = YES;
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_REGION_BASED_ISOLATION = YES;
 			};
 			name = Debug;
 		};
@@ -382,6 +535,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_NUMBER = 2;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -431,6 +585,25 @@
 				PRODUCT_NAME = "$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_UPCOMING_FEATURE_CONCISE_MAGIC_FILE = YES;
+				SWIFT_UPCOMING_FEATURE_DEPRECATE_APPLICATION_MAIN = YES;
+				SWIFT_UPCOMING_FEATURE_DISABLE_OUTWARD_ACTOR_ISOLATION = YES;
+				SWIFT_UPCOMING_FEATURE_DYNAMIC_ACTOR_ISOLATION = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_FORWARD_TRAILING_CLOSURES = YES;
+				SWIFT_UPCOMING_FEATURE_GLOBAL_ACTOR_ISOLATED_TYPES_USABILITY = YES;
+				SWIFT_UPCOMING_FEATURE_GLOBAL_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_IMPLICIT_OPEN_EXISTENTIALS = YES;
+				SWIFT_UPCOMING_FEATURE_IMPORT_OBJC_FORWARD_DECLS = YES;
+				SWIFT_UPCOMING_FEATURE_INFER_ISOLATED_CONFORMANCES = YES;
+				SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = NO;
+				SWIFT_UPCOMING_FEATURE_ISOLATED_DEFAULT_VALUES = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_UPCOMING_FEATURE_NONFROZEN_ENUM_EXHAUSTIVITY = YES;
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_REGION_BASED_ISOLATION = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -441,7 +614,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -451,7 +624,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order to assist you the best, we need to fetch your current location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to assist you the best, we need to fetch your current location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,7 +659,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -496,7 +669,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ShiftBee/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "In order to assist you the best, we need to fetch your current location.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to assist you the best, we need to fetch your current location.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -570,6 +743,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShiftBeeUITests/Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurnUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -587,6 +761,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = STFH26U9BW;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShiftBeeUITests/Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurnUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,6 +769,68 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = YourTurn;
+			};
+			name = Release;
+		};
+		87572B642E433E1E005AEE26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = STFH26U9BW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShiftBeeAlarmWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShiftBeeAlarmWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurn.ShiftBeeAlarmWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		87572B652E433E1E005AEE26 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = STFH26U9BW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShiftBeeAlarmWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShiftBeeAlarmWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.moondev.YourTurn.ShiftBeeAlarmWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -632,6 +869,15 @@
 			buildConfigurations = (
 				870BD2DB2DC78DD300D9955A /* Debug */,
 				870BD2DC2DC78DD300D9955A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87572B632E433E1E005AEE26 /* Build configuration list for PBXNativeTarget "ShiftBeeAlarmWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87572B642E433E1E005AEE26 /* Debug */,
+				87572B652E433E1E005AEE26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

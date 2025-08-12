@@ -5,8 +5,11 @@
 //  Created by Ruben Mimoun on 05/08/2025.
 //
 
+import OSLog
+import FoundationModels
 import SwiftUI
 
+@MainActor
 class ActivityMapsObs {
     
     var asyncLookUpPoints: AsyncStream<NearbyAddress>
@@ -33,36 +36,54 @@ class ActivityMapsObs {
                     """
         
         let addressModelGenerator: ModelGenerator<[NearbyCity]> = .init(generationOptions: .init(), instructions: { addressInstructions })
+
         cityTask = Task {
             var setCities: Set<String> = .init()
-            var sentCities: Set<String> = .init()
-            
             do {
-                try await Task.sleep(for: .milliseconds(300))
-                guard !Task.isCancelled else { return }
-                
-                try await addressModelGenerator.response(
-                    to:  "Near coordinates such as latitude: \(currentLatitude), longitude: \(currentLongitude). With name starts by \(input)",
-                    { [weak self] generated  in
-                        let cities = generated
-                        
-                        cities.compactMap(\.title).filter { !$0.isEmpty }.forEach { cityName in
-                            setCities.insert(cityName)
+                for try await snapshot in addressModelGenerator.stream where !snapshot.content.isEmpty {
+                    let cities = snapshot.content
+                    cities.compactMap(\.title).filter { !$0.isEmpty }.forEach { cityName in
+                        let (isInserted, city) = setCities.insert(cityName)
+                        if isInserted {
+                            self.continuationCities.yield(city)
                         }
-                        print(setCities)
-                        let citySorted = Array(setCities).sorted()
-                        
-                        for city in citySorted {
-                            let (inserted, _) = sentCities.insert(city)
-                            if inserted {
-                                await self?.continuationCities.yield(city)
-                            }
-                        }
-                    })
+                    }
+                }
+                try await addressModelGenerator.responseStream(to: "Near coordinates such as latitude: \(currentLatitude), longitude: \(currentLongitude). With name starts by \(input)")
             } catch {
                 ShiftBeeApp.logger.error("for addressModelGenerator.response() - error \(error)")
             }
         }
+        
+//        cityTask = Task {
+//            var setCities: Set<String> = .init()
+//            var sentCities: Set<String> = .init()
+//            
+//            do {
+//                try await Task.sleep(for: .milliseconds(300))
+//                guard !Task.isCancelled else { return }
+//                
+//                try await addressModelGenerator.response(
+//                    to:  "Near coordinates such as latitude: \(currentLatitude), longitude: \(currentLongitude). With name starts by \(input)",
+//                    { [weak self] generated  in
+//                        let cities = generated
+//                        cities.content.compactMap(\.title).filter { !$0.isEmpty }.forEach { cityName in
+//                            setCities.insert(cityName)
+//                        }
+//                        print(setCities)
+//                        let citySorted = Array(setCities).sorted()
+//                        
+//                        for city in citySorted {
+//                            let (inserted, _) = sentCities.insert(city)
+//                            if inserted {
+//                                self?.continuationCities.yield(city)
+//                            }
+//                        }
+//                    })
+//            } catch {
+//                ShiftBeeApp.logger.error("for addressModelGenerator.response() - error \(error)")
+//            }
+//        }
         
     }
     
@@ -83,6 +104,7 @@ class ActivityMapsObs {
                     to: "Near coordinates such as latitude: \(currentLatitude), longitude: \(currentLongitude)",
                     { [weak self] generated  in
                         let lookUpPoints = generated
+                            .content
                             .compactMap {
                                 NearbyAddress(
                                     title: $0.title ?? "",
@@ -98,7 +120,7 @@ class ActivityMapsObs {
                             .sorted(by: { $0.title < $1.title })
                         
                         for address in lookUpPoints {
-                            await self?.continuationLookUpPoints.yield(address)
+                            self?.continuationLookUpPoints.yield(address)
                         }
                     })
             } catch {

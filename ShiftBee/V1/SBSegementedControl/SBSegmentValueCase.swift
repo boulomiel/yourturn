@@ -9,7 +9,7 @@ protocol SBSegmentValueCase: CaseIterable, Hashable {
     var name: String { get }
 }
 
-enum SBSelectionCase: SBSegmentValueCase {
+enum SBSelectionCase: @MainActor SBSegmentValueCase {
     case byDay
     case byPeriod
     

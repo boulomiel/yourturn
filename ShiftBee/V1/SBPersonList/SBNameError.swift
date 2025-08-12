@@ -5,7 +5,7 @@
 //  Created by Ruben Mimoun on 06/05/2025.
 //
 
-enum SBNameError: SBErrorPopupProtocol, Error {
+enum SBNameError: @MainActor SBErrorPopupProtocol, Error {
     var localizedDescription: String {
         switch self {
         case .idle:

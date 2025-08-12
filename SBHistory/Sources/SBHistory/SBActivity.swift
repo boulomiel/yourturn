@@ -29,7 +29,7 @@ extension ShiftBeeSchemaV2 {
 //            self.endDate = endDate
 //        }
         
-        public init(domainId: UUID, timestamp: TimeInterval, title: String, taskDescription: String?, startDate: Date, endDate: Date) {
+        nonisolated public init(domainId: UUID, timestamp: TimeInterval, title: String, taskDescription: String?, startDate: Date, endDate: Date) {
             self.domainId = domainId
             self.timestamp = timestamp
             self.title = title
@@ -38,4 +38,8 @@ extension ShiftBeeSchemaV2 {
             self.endDate = endDate
         }
     }
+}
+
+public extension PersistentModel where Self == SBActivity {
+    
 }

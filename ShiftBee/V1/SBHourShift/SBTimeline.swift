@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 08/05/2025.
 //
 
+import SwiftData
 import SwiftUI
 
 struct SBTimeline: View {

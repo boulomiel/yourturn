@@ -41,22 +41,23 @@ struct ActivityMapView: View {
                 .font(.system(size: 25).bold().weight(.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Section {
-                ForEach(cities, id: \.self) { city in
-                    Text(city.title)
-                        .font(.system(size: 16).bold().weight(.medium))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            } header: {
-                VStack {
-                    Text("City")
-                        .font(.system(size: 20).bold().weight(.medium))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    TextField("Input here", text:  $cityField)
-                        .textFieldStyle(.roundedBorder)
-                }
-            }
+//            Section {
+//                ForEach(cities, id: \.self) { city in
+//                    Text(city.title)
+//                        .font(.system(size: 16).bold().weight(.medium))
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                }
+//            } header: {
+//                VStack {
+//                    Text("City")
+//                        .font(.system(size: 20).bold().weight(.medium))
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                    
+//                    TextField("Input here", text:  $cityField)
+//                        .textFieldStyle(.roundedBorder)
+//                }
+//            }
+            ActivityAutoFillSelectionField()
             
         }
         .overlay(alignment: .bottom, content: {
@@ -76,12 +77,15 @@ struct ActivityMapView: View {
         })
         .ignoresSafeArea(.keyboard, edges: .top)
         .simultaneousGesture(TapGesture(count: 2).onEnded({ _ in
-            guard let userLocation = locationManager.userLocation else { return }
+        //    guard let userLocation = locationManager.userLocation else { return }
         //    router.presentSheet(.mapZoom(userLocation: userLocation,transitionId: "map", mapSpace: mapNameSpace))
         }))
         .task {
             for await city in obs.asyncCities {
-                self.cities.append(.init(title: city, coordinates: .init(latitude: 0.0, longitude: 0.0)))
+                var set = Set(cities)
+                set.insert(.init(title: city, coordinates: .init(latitude: 0.0, longitude: 0.0)))
+                let cities = Array(set).sorted(by: { $0.title < $1.title })
+                self.cities = cities
             }
         }
     }
@@ -131,9 +135,9 @@ struct ActivityLocationMapView: View {
     }
 }
 
-//
-//#Preview(traits: .modifier(ActivityPreviewModifier())) {
-//    ActivityMapView()
-//        .preferredColorScheme(.dark)
-//
-//}
+
+#Preview(traits: .modifier(ActivityPreviewModifier())) {
+    ActivityMapView()
+        .preferredColorScheme(.dark)
+
+}

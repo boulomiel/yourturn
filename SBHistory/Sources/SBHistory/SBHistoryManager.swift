@@ -12,19 +12,21 @@ public typealias SBModel = (any PersistentModel & SBDomainAccessProtocol)
 
 /// Protocol required to conformed to be an illigebile struct to be a domain
 /// data from a `SBHistory entities`
-nonisolated public protocol SBDomainProtocol: Identifiable {
-    var timestamp: TimeInterval { get }
+public protocol SBDomainProtocol: Identifiable {
+    nonisolated var timestamp: TimeInterval { get }
     associatedtype SBHistoryEntity: SBDomainAccessProtocol
-    func toEntity() -> SBHistoryEntity
+    
+    nonisolated func toEntity() -> SBHistoryEntity
 }
 
 
 /// Protocol to add to an extension on an `SB Entity` in order to convert it to a domain sendable struct
-nonisolated public protocol SBDomainAccessProtocol {
+@MainActor public protocol SBDomainAccessProtocol {
     associatedtype DomainData: SBDomainProtocol
-    var domainId: UUID { get }
-    var timestamp: TimeInterval { get }
-    func toDomainData() -> DomainData
+    nonisolated var domainId: UUID { get }
+    nonisolated var timestamp: TimeInterval { get }
+    
+    nonisolated func toDomainData() -> DomainData
 }
 
 enum SBHistoryManagerError: LocalizedError {
@@ -36,7 +38,7 @@ enum SBHistoryManagerError: LocalizedError {
 
 @ModelActor
 public actor SBHistoryManager: Observable {
-        
+    
     /// Insert an entity into the modelContainer
     /// - Parameter model: Entity to be inserted conforming to PersistenModel and SBDomainAccessProtocol
     public func insert<Domain>(_ model: Domain) throws where Domain: SBDomainProtocol, Domain.SBHistoryEntity: PersistentModel, Domain.ID == UUID {
@@ -84,6 +86,28 @@ public actor SBHistoryManager: Observable {
         fetchDescriptor.fetchOffset = fetchOffset
         fetchDescriptor.propertiesToFetch = propertiesToFetch
         return try modelContext.fetch(fetchDescriptor).map { $0.toDomainData() }
+    }
+    
+    /// Fetches all the models given the following parameters
+    /// - Parameters:
+    ///   - predicate: #Predicate -  in order to filter the models, does not filter if nil
+    ///   - sortDescriptors: The structural order for the returned list, random access if nil
+    ///   - fetchLimit: Number items to fetch, max number fetched if nil
+    ///   - fetchOffset: Define the start point of a range of items to fetch, base offset is 0 if nil
+    ///   - propertiesToFetch: What properties will be accessible, fetch the entity as a whole if nil
+    /// - Returns: List of PersistentModels
+    public func fetchModel<Model: PersistentModel>(
+        predicate: Predicate<Model>?,
+        sortDescriptors: [SortDescriptor<Model>]?,
+        fetchLimit: Int? = nil,
+        fetchOffset: Int? = nil,
+        propertiesToFetch: [PartialKeyPath<Model>] = []
+    ) throws -> [Model] {
+        var fetchDescriptor = FetchDescriptor(predicate: predicate, sortBy: sortDescriptors ?? [])
+        fetchDescriptor.fetchLimit = fetchLimit
+        fetchDescriptor.fetchOffset = fetchOffset
+        fetchDescriptor.propertiesToFetch = propertiesToFetch
+        return try modelContext.fetch(fetchDescriptor)
     }
     
     public func fetchCount<T: PersistentModel>(
@@ -141,5 +165,4 @@ public actor SBHistoryManager: Observable {
             return .init(type: type, id: id, lastItemTimestamp: lastItemTimestamp)
         }
     }
-
 }

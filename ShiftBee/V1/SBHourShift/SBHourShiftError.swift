@@ -5,7 +5,7 @@
 //  Created by Ruben Mimoun on 05/05/2025.
 //
 
-enum SBHourShiftError: SBErrorPopupProtocol, Error {
+enum SBHourShiftError: @MainActor SBErrorPopupProtocol, Error {
 
     case error
     case nameErrors(SBNameError)

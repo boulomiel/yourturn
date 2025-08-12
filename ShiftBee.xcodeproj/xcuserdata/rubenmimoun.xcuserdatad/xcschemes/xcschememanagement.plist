@@ -7,12 +7,17 @@
 		<key>ShiftBee.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
+		</dict>
+		<key>ShiftBeeAlarmWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>ShiftBeeTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>YourTurn.xcscheme_^#shared#^_</key>
 		<dict>
@@ -33,6 +38,11 @@
 			<true/>
 		</dict>
 		<key>870BD2C92DC78DD300D9955A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>87572B4C2E433E1D005AEE26</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 29/07/2025.
 //
 
+import OSLog
 import SBExtensions
 import SwiftData
 import SBHistory
@@ -110,4 +111,3 @@ class WeeklyCalendarViewObs {
         }
     }
 }
-

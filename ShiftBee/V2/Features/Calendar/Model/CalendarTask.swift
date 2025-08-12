@@ -5,6 +5,7 @@
 //  Created by Ruben Mimoun on 29/07/2025.
 //
 
+import SBExtensions
 import SBHistory
 import SwiftData
 import Foundation
@@ -24,7 +25,7 @@ public struct CalendarTask: Identifiable, Hashable {
     var title: String
     var eventDescription: String?
     
-    init(start: Date, end: Date, title: String, eventDescription: String? = nil) {
+    public init(start: Date, end: Date, title: String, eventDescription: String? = nil) {
         self.id = UUID()
         self.timestamp = Date.now.timeIntervalSince1970
         self.start = start
@@ -33,7 +34,7 @@ public struct CalendarTask: Identifiable, Hashable {
         self.eventDescription = eventDescription
     }
         
-    init(id: UUID, timestamp: TimeInterval, start: Date, end: Date, title: String, eventDescription: String? = nil) {
+    nonisolated init(id: UUID, timestamp: TimeInterval, start: Date, end: Date, title: String, eventDescription: String? = nil) {
         self.id = id
         self.timestamp = timestamp
         self.start = start
@@ -97,7 +98,7 @@ public struct CalendarTask: Identifiable, Hashable {
 }
 
 /// Conformance to `SBHisotry entities`
-extension CalendarTask: @MainActor SBDomainProtocol {
+extension CalendarTask: SBDomainProtocol {
     
     @MainActor
     public func toEntity() -> SBActivity {
@@ -107,12 +108,11 @@ extension CalendarTask: @MainActor SBDomainProtocol {
     public typealias SBHistoryEntity = SBActivity
 }
 
-extension SBActivity: @MainActor @retroactive SBDomainAccessProtocol {
+extension SBActivity: @retroactive SBDomainAccessProtocol {
     
     public typealias DomainData = CalendarTask
     
-    @MainActor
-    public func toDomainData() -> DomainData {
+    nonisolated public func toDomainData() -> DomainData {
         .init(id: domainId, timestamp: timestamp, start: startDate, end: endDate, title: title, eventDescription: taskDescription)
     }
     

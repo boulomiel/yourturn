@@ -71,7 +71,7 @@ extension ShiftBeeApp {
     
     nonisolated static let logger = Logger(subsystem: "com.shiftbee.SwiftData", category: "App")
 
-    static func setupModelContainer(for versionedSchema: VersionedSchema.Type = ShiftBeeSchemaV2.self, rollback: Bool = false) throws -> ModelContainer {
+    static func setupModelContainer(for versionedSchema: any VersionedSchema.Type = ShiftBeeSchemaV2.self, rollback: Bool = false) throws -> ModelContainer {
         do {
             logger.info("setup - versionedSchema: \(String(describing: versionedSchema))")
             
@@ -107,6 +107,6 @@ extension ShiftBeeApp {
     }
 
     enum ModelError: LocalizedError {
-        case setup(error: Error)
+        case setup(error: any Error)
     }
 }

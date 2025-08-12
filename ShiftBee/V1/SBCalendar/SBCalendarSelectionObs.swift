@@ -10,9 +10,6 @@ import SwiftUI
 import SwiftData
 import Foundation
 
-extension Array: @unchecked Sendable { }
-
-
 @Observable
 @MainActor
 class SBCalendarSelectionObs {
